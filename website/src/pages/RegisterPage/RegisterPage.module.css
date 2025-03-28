@@ -38,8 +38,15 @@ form {
   color: var(--accent);
 }
 
+.doubleRow {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
 .row {
   position: relative;
+  width: 100%;
 }
 
 .row > label {
@@ -111,3 +118,4 @@ hr {
 .error {
   border: solid 1px var(--error);
 }
+

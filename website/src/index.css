@@ -13,18 +13,18 @@
 }
 
 :root {
-  --font-350: calc(var(--font-400) - .125rem);
+  --font-350: calc(var(--font-400) - 0.125rem);
   --font-400: 1rem;
-  --font-500: calc(var(--font-400) + .125rem);
-  --font-700: calc(var(--font-400) + .5rem);
+  --font-500: calc(var(--font-400) + 0.125rem);
+  --font-700: calc(var(--font-400) + 0.5rem);
   --font-800: calc(var(--font-400) + 1.25rem);
   --font-900: calc(var(--font-400) + 1.5rem);
 
-  --primary: #FFFFFF;
-    --secondary: #EDEDED;
-    --accent: #D97474;
---text: #292928;
---text-2: #4B4B4B;
+  --primary: #ffffff;
+  --secondary: #ededed;
+  --accent: #d97474;
+  --text: #292928;
+  --text-2: #4b4b4b;
 }
 
 * {
@@ -33,7 +33,6 @@
   font-family: "Lexend", sans-serif;
   transition: font-size 0.1s;
 }
-
 
 h1 {
   font-size: var(--font-800);
@@ -53,7 +52,7 @@ select,
 button,
 div {
   font-size: var(--font-400);
-  color: var(--text-primary);
+  color: var(--text);
 }
 
 h1,
@@ -62,7 +61,7 @@ h3,
 h4,
 h5,
 p {
-  color: var(--text-primary);
+  color: var(--text);
 }
 
 body {
@@ -95,14 +94,17 @@ body {
 ::-webkit-scrollbar-thumb {
   background: #888;
   border-radius: 20px;
-  background-color: var(--accent-green);
+  background-color: var(--accent);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background-color: var(--accent-orange);
+  background-color: var(--accent);
 }
 
 .hide {
   display: none;
 }
 
+button:active {
+  opacity: 0.5;
+}

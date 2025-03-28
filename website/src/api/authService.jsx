@@ -10,7 +10,7 @@ class AuthService {
       });
 
       if (response.status === 200) {
-        localStorage.setItem("token", response.data)
+        localStorage.setItem("access_token", response.data.token)
       }
     } catch (error) {
       console.log(error)
@@ -18,7 +18,7 @@ class AuthService {
   }
 
   logout() {
-    localStorage.removeItem("token");
+    localStorage.removeItem("access_token");
   }
 
   is_authenticated() {
@@ -26,7 +26,7 @@ class AuthService {
   }
 
   signup(username, email, password) {
-    return httpClient.post(`${BASE_API_URL}/signup`, {
+    return httpClient.post(`${BASE_API_URL}/register`, {
       username,
       email,
       password,

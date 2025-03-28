@@ -1,9 +1,16 @@
-import axios from "axios"
+import axios from "axios";
 
-const token = localStorage.getItem("token");
+const httpClient = axios.create();
 
-export default axios.create({
-  headers: {
-    Authorization: `Bearer ${token}`
+httpClient.interceptors.request.use((config) => {
+  const token = localStorage.getItem("access_token"); // Get the latest token
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
   }
-})
+  return config;
+}, (error) => {
+  return Promise.reject(error);
+});
+
+export default httpClient;
+

@@ -1,0 +1,7 @@
+.container {
+  display: flex;
+  width: 100dvw;
+  height: 100dvh;
+  padding: 2rem;
+  box-sizing: border-box;
+}

@@ -1,0 +1,98 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  max-width: 20rem;
+  width: 100%;
+  border: 1px solid var(--secondary);
+  background-color: var(--primary);
+  box-sizing: border-box;
+  padding: 1rem 2rem;
+}
+
+.logo {
+  width: 90px;
+  height: auto;
+}
+
+.logo > img {
+  width: 100%;
+}
+
+ul, a, button, li {
+  all: unset;
+}
+
+.container > ul {
+  display: flex;
+  flex-direction: column;
+  row-gap: 3rem;
+  width: 100%;
+  justify-content: center;
+}
+
+.icon {
+  width: 2rem;
+  height: auto;
+}
+
+.icon > img {
+  width: 100%;
+  height: auto;
+}
+
+
+li > a, button{
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  box-sizing: border-box;
+  border: solid 1px var(--primary);
+}
+
+li > a:hover, button:hover {
+  border: solid 1px var(--secondary);
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+li > a:active, button:active {
+  opacity: 0.5;
+}
+
+.active {
+  border: solid 1px var(--accent);
+  border-radius: 5px;
+}
+
+.profile {
+  color: var(--secondary);
+  background-color: var(--accent);
+  width: 100%;
+  padding: 1rem 2rem;
+  text-align: center;
+  border-radius: 5px;
+  border: 1px solid var(--accent);
+  transition: 0.2s background-color, 0.2s color;
+}
+
+.profile:hover {
+  background-color: var(--primary);
+  color: var(--accent);
+  cursor: pointer;
+}
+
+.profile:active {
+  opacity: 0.5;
+}
+
+.navBottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}

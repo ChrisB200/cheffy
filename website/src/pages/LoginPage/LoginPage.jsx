@@ -1,7 +1,8 @@
 import { useState } from "react";
 import styles from "./LoginPage.module.css"
 import { Link, useNavigate } from "react-router-dom";
-import authService from "../../api/authService"
+import authService from "../../api/authService";
+import cheffylogo from "../../assets/cheffy-logo-256x256.png";
 
 function Login() {
   // allows for page redirection
@@ -51,6 +52,9 @@ function Login() {
       }
     }
   return <>
+    <div className={styles.logo}>
+      <img src={cheffylogo}/>
+    </div>
     <div className={styles.container}>
       <form onSubmit={handleSubmit}>
         <h1>Log in</h1>
@@ -69,8 +73,7 @@ function Login() {
         <div className={styles.actions}>
           <button className={styles.create}>Log in</button>
           <p className={`${styles.invalid} ${error != "invalid-form" ? "hide": ""}`}>Please provide a valid email and password</p>
-          <p>No account? <Link to="/signup" className={styles.clickable}>Create One</Link></p>
-          <Link to="/forgot" className={styles.clickable}>Forgot Password</Link>
+          <p>No account? <Link to="/register" className={styles.clickable}>Create One</Link></p>
         </div>
       </form>
     </div>
