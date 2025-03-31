@@ -21,7 +21,15 @@ const sequelize = new Sequelize({
 
 // get all models
 const modelDefiners = [
-  require("./models/user.model")
+  require("./models/user.model"),
+  require("./models/recipe.model"),
+  require("./models/step.model"),
+  require("./models/unit.model"),
+  require("./models/ingredient.model"),
+  require("./models/rating.model"),
+  require("./models/like.model"),
+  require("./models/hashtag.model"),
+  require("./models/recipeHashtag.model")
 ];
 
 for (const modelDefiner of modelDefiners) {

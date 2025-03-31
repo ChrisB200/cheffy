@@ -3,17 +3,21 @@ import add from "../../assets/add.png";
 import bookmark from "../../assets/bookmark.png";
 import home from "../../assets/home.png";
 import cheffyLogo from "../../assets/cheffy-logo-256x256.png";
-import styles from "./Navbar.module.css"
+import styles from "./Navbar.module.css";
 import { Link, useLocation } from "react-router-dom";
 import { FormControlLabel, Switch } from "@mui/material";
 
-function Navbar() {
-  const location = useLocation()
+function Navbar({ setShowModal }) {
+  const location = useLocation();
 
   const isActive = (name) => {
     if (location.pathname == name) {
-      return styles.active
+      return styles.active;
     }
+  };
+
+  const showModal = () => {
+    setShowModal(true);
   }
 
   return (
@@ -31,7 +35,10 @@ function Navbar() {
           </Link>
         </li>
         <li>
-          <Link to="/bookmarks" className={`${isActive("/bookmarks")} ${styles.control}`}>
+          <Link
+            to="/bookmarks"
+            className={`${isActive("/bookmarks")} ${styles.control}`}
+          >
             <div className={styles.icon}>
               <img src={bookmark} alt="" />
             </div>
@@ -39,7 +46,7 @@ function Navbar() {
           </Link>
         </li>
         <li>
-          <button className={styles.control}>
+          <button className={styles.control} onClick={showModal}>
             <div className={styles.icon}>
               <img src={add} alt="" />
             </div>
@@ -48,8 +55,19 @@ function Navbar() {
         </li>
       </ul>
       <div className={styles.navBottom}>
-        <Link className={styles.profile} to="/profile">My Profile</Link>
-        <FormControlLabel control={<Switch />} label="Dark Mode" />
+        <Link className={styles.profile} to="/profile">
+          My Profile
+        </Link>
+        <FormControlLabel
+          control={<Switch />}
+          label="Dark Mode"
+          sx={{
+            "& .MuiFormControlLabel-label": {
+              fontFamily: "Lexend, sans-serif",
+              color: "var(--text)",
+            },
+          }}
+        />
       </div>
     </nav>
   );

@@ -96,3 +96,7 @@ li > a:active, button:active {
   align-items: center;
   gap: 2rem;
 }
+
+.switchLabel {
+  font-family: "Lexend", sans-serif;
+}

@@ -1,0 +1,13 @@
+.time {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.time > input {
+  padding: 1rem;
+  font-size: var(--font-700);
+  border: 1px solid var(--secondary);
+  border-radius: 5px;
+}
