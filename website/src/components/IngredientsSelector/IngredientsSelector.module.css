@@ -16,13 +16,16 @@
 
 .add {
   background-color: var(--accent);
-  color: var(--primary);
+  color: var(--text);
   font-weight: bold;
   max-width: 200px;
   border-radius: 5px;
   grid-column: 3;
   border: 1px solid var(--accent);
   transition: background-color 0.2s, color 0.2s;
+  max-width: 7rem;
+  justify-self: right;
+  margin-top: 0.5rem;
 }
 
 .add:hover {

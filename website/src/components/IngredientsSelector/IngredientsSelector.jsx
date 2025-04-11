@@ -4,7 +4,6 @@ import useFetch from "../../hooks/useFetch";
 import { BASE_API_URL } from "../../utils/constants";
 
 function IngredientsSelector({ ingredients, setIngredients }) {
-
   const { data: units, error } = useFetch({
     url: `${BASE_API_URL}/units`,
     method: "get",
@@ -19,14 +18,16 @@ function IngredientsSelector({ ingredients, setIngredients }) {
   const [currentIngredient, setCurrentIngredient] = useState({
     name: "",
     amount: 0,
-    unit: "g",
+    unit: null, // Store full unit object instead of just abbreviation
   });
 
   const selectChange = (e, index) => {
-    const newUnit = e.target.value;
+    const unitAbbreviation = e.target.value;
+    const selectedUnit = units.find((unit) => unit.abbreviation === unitAbbreviation);
+
     setIngredients((prev) => {
       const updated = [...prev];
-      updated[index] = { ...updated[index], unit: newUnit };
+      updated[index] = { ...updated[index], unit: selectedUnit };
       return updated;
     });
   };
@@ -42,9 +43,17 @@ function IngredientsSelector({ ingredients, setIngredients }) {
 
   const handleChange = (e) => {
     let value = e.target.value;
-
     if (e.target.name === "amount") {
       value = parseFloat(value);
+    }
+
+    if (e.target.name === "unit") {
+      const selectedUnit = units.find((unit) => unit.abbreviation === value);
+      setCurrentIngredient((prev) => ({
+        ...prev,
+        unit: selectedUnit,
+      }));
+      return;
     }
 
     setCurrentIngredient((prev) => ({
@@ -55,30 +64,29 @@ function IngredientsSelector({ ingredients, setIngredients }) {
 
   const handleRemove = (e, i) => {
     e.preventDefault();
-    setIngredients((prev) => {
-      return prev.filter((_, index) => index !== i);
-    });
+    setIngredients((prev) => prev.filter((_, index) => index !== i));
   };
 
   const handleAdd = (e) => {
     e.preventDefault();
 
-    if (currentIngredient.name === "") {
-      alert("Please enter an ingredient name");
+    if (currentIngredient.name === "" || !currentIngredient.unit) {
+      alert("Please enter an ingredient name and select a unit");
       return;
     }
 
-    setIngredients((prevIngredients) => [
-      ...prevIngredients,
-      currentIngredient,
-    ]);
+    setIngredients((prevIngredients) => [...prevIngredients, currentIngredient]);
 
     setCurrentIngredient({
       name: "",
       amount: 0,
-      unit: "",
+      unit: null,
     });
   };
+
+  useEffect(() => {
+    console.log(units);
+  }, [units]);
 
   return (
     <>
@@ -87,16 +95,10 @@ function IngredientsSelector({ ingredients, setIngredients }) {
           return (
             <>
               <div className={styles.removeContainer}>
-                <p
-                  key={`${ingredient.name}-${i}`}
-                  className={styles.ingredient}
-                >
+                <p key={`${ingredient.name}-${i}`} className={styles.ingredient}>
                   {ingredient.name}
                 </p>
-                <button
-                  onClick={(e) => handleRemove(e, i)}
-                  className={styles.remove}
-                >
+                <button onClick={(e) => handleRemove(e, i)} className={styles.remove}>
                   -
                 </button>
               </div>
@@ -110,15 +112,16 @@ function IngredientsSelector({ ingredients, setIngredients }) {
                 type="number"
               />
               <select
-                key={`${ingredient.unit}-${i}`}
+                key={`${ingredient.unit?.abbreviation || ""}-${i}`}
                 className={styles.select}
-                value={ingredient.unit}
+                value={ingredient.unit?.abbreviation || ""}
                 onChange={(e) => selectChange(e, i)}
               >
+                <option value="" disabled>Select a unit</option>
                 {units?.map((unit) => {
                   return (
                     <option key={unit.id} value={unit.abbreviation}>
-                      {unit.abbreviation}
+                      {unit.name}
                     </option>
                   );
                 })}
@@ -146,14 +149,15 @@ function IngredientsSelector({ ingredients, setIngredients }) {
         />
         <select
           className={styles.select}
-          value={currentIngredient.unit}
+          value={currentIngredient.unit?.abbreviation || ""}
           name="unit"
           onChange={handleChange}
         >
+          <option value="" disabled>Select a unit</option>
           {units?.map((unit) => {
             return (
               <option key={unit.id} value={unit.abbreviation}>
-                {unit.abbreviation}
+                {unit.name}
               </option>
             );
           })}
@@ -167,3 +171,4 @@ function IngredientsSelector({ ingredients, setIngredients }) {
 }
 
 export default IngredientsSelector;
+

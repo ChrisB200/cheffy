@@ -1,0 +1,101 @@
+.container {
+  display: flex;
+  align-items: center;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.user {
+  border: 1px solid var(--secondary);
+  width: fit-content;
+  border-radius: 5px;
+}
+
+.difficulty {
+  color: var(--text-2);
+}
+
+.title {
+  margin: 0;
+  font-size: var(--font-900);
+  max-width: 30rem;
+}
+
+.icon {
+  color: var(--text);
+  width: 24px;
+  height: auto;
+}
+
+.info {
+  display: flex;
+  gap: 2rem;
+}
+
+.info > div {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.info > div > p {
+  color: var(--text);
+  white-space: nowrap;
+}
+
+
+.actions {
+  display: flex;
+  gap: 2rem;
+}
+
+.button {
+  width: fit-content;
+  gap: 1rem;
+  border-radius: 40px;
+  transition: border-radius 0.2s ease-out;
+  padding: 0.8rem 1.5rem
+}
+
+.button:hover {
+  cursor: pointer;
+}
+
+.like {
+  color: var(--accent-text);
+  background-color: var(--accent);
+  border: 1px solid var(--accent);
+}
+
+.like > .icon, p {
+  color: var(--accent-text);
+}
+
+.bookmark {
+  color: var(--accent-text);
+  background-color: var(--text);
+  border: 1px solid var(--text);
+}
+
+.bookmark > .icon, .bookmark > p {
+  color: var(--primary);
+}
+
+
+@media (max-width: 768px) {
+  .title {
+    text-align: center;
+  }
+
+  .info {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .actions {
+    justify-content: center;
+  }
+}

@@ -1,0 +1,30 @@
+.title {
+  font-size: var(--font-800);
+  font-weight: normal;
+  margin-bottom: 2rem;
+}
+
+.content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  box-sizing: border-box;
+  flex-wrap: wrap;
+  height: 100%;
+  width: 100%;
+  border-radius: 20px;
+  padding: 1rem;
+  background-color: var(--secondary);
+  width: 100%;
+  height: auto;
+}
+
+.instruction {
+  color: var(--text);
+}
+
+.index {
+  font-weight: bold;
+  font-size: var(--font-800);
+}

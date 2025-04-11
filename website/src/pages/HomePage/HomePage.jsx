@@ -1,15 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar/Navbar";
 import styles from "./HomePage.module.css"
-import RecipeModalSheet from "../../components/RecipeModalSheet/RecipeModalSheet";
+import { useUser } from "../../hooks/contexts";
+import SearchBar from "../../components/SearchBar/SearchBar";
+import RecipesGrid from "../../components/RecipesGrid/RecipesGrid";
 
 function HomePage() {
-  const [showModal, setShowModal] = useState(false)
+  const { user } = useUser()
+
   return (
     <>
-      {showModal ? <RecipeModalSheet setShowModal={setShowModal}/> : null}
       <div className={styles.container}>
-        <Navbar setShowModal={setShowModal}/>
+        <Navbar/>
+        <main>
+          <SearchBar/>
+          <RecipesGrid/>
+        </main>
       </div>;
   </>
   )

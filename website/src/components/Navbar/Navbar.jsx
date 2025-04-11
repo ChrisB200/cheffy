@@ -1,14 +1,29 @@
-import React from "react";
-import add from "../../assets/add.png";
-import bookmark from "../../assets/bookmark.png";
-import home from "../../assets/home.png";
+import React, { useEffect, useState } from "react";
+import addDark from "../../assets/addDark.png";
+import bookmarkDark from "../../assets/bookmarkDark.png";
+import homeDark from "../../assets/homeDark.png";
+import addLight from "../../assets/addLight.png";
+import bookmarkLight from "../../assets/bookmarkLight.png";
+import homeLight from "../../assets/homeLight.png";
 import cheffyLogo from "../../assets/cheffy-logo-256x256.png";
 import styles from "./Navbar.module.css";
 import { Link, useLocation } from "react-router-dom";
 import { FormControlLabel, Switch } from "@mui/material";
+import { useNavbar, useTheme, useUser } from "../../hooks/contexts";
+import Icon from "../Icon/Icon";
+import RecipeModalSheet from "../RecipeModalSheet/RecipeModalSheet"
 
-function Navbar({ setShowModal }) {
+function Navbar() {
   const location = useLocation();
+  const { user } = useUser();
+  const { theme, setTheme, increaseFontSize, decreaseFontSize, resetFontSize } = useTheme();
+  const { isNavbarOpen } = useNavbar();
+  const [checked, setChecked] = useState(theme === "dark" ? true : false);
+  const [showModal, setShowModal] = useState(false);
+
+  const handleCheck = (e) => {
+    setChecked(e.target.checked);
+  };
 
   const isActive = (name) => {
     if (location.pathname == name) {
@@ -16,61 +31,107 @@ function Navbar({ setShowModal }) {
     }
   };
 
-  const showModal = () => {
-    setShowModal(true);
-  }
+  const openModal = () => {
+    if (user) {
+      setShowModal(true);
+    } else {
+      alert("You must be logged in to create a post");
+    }
+  };
 
-  return (
-    <nav className={styles.container}>
-      <div className={styles.logo}>
-        <img src={cheffyLogo} alt="Cheffy" />
-      </div>
-      <ul>
-        <li>
-          <Link to="/" className={`${isActive("/")} ${styles.control}`}>
-            <div className={styles.icon}>
-              <img src={home} alt="" />
-            </div>
-            <p>My Feed</p>
-          </Link>
-        </li>
-        <li>
-          <Link
-            to="/bookmarks"
-            className={`${isActive("/bookmarks")} ${styles.control}`}
-          >
-            <div className={styles.icon}>
-              <img src={bookmark} alt="" />
-            </div>
-            <p>Bookmarks</p>
-          </Link>
-        </li>
-        <li>
-          <button className={styles.control} onClick={showModal}>
-            <div className={styles.icon}>
-              <img src={add} alt="" />
-            </div>
-            <p>Add Recipe</p>
-          </button>
-        </li>
-      </ul>
-      <div className={styles.navBottom}>
-        <Link className={styles.profile} to="/profile">
-          My Profile
-        </Link>
-        <FormControlLabel
-          control={<Switch />}
-          label="Dark Mode"
-          sx={{
-            "& .MuiFormControlLabel-label": {
-              fontFamily: "Lexend, sans-serif",
-              color: "var(--text)",
-            },
-          }}
-        />
-      </div>
-    </nav>
-  );
+  useEffect(() => {
+    setChecked(theme === "dark" ? true : false);
+  }, [theme]);
+
+  useEffect(() => {
+    if (checked) {
+      setTheme("dark");
+    } else {
+      setTheme("light");
+    }
+  }, [checked]);
+
+  return (isNavbarOpen ? (
+    <>
+      {showModal ? <RecipeModalSheet setShowModal={setShowModal}/> : null}
+      <nav className={styles.container}>
+        <div className={styles.logo}>
+          <img src={cheffyLogo} alt="Cheffy" />
+        </div>
+        <ul className={styles.list}>
+          <li>
+            <Link to="/" className={`${isActive("/")} ${styles.control}`}>
+              <div className={styles.icon}>
+                <Icon lightIcon={homeLight} darkIcon={homeDark} alt="" />
+              </div>
+              <p>My Feed</p>
+            </Link>
+          </li>
+          <li>
+            {" "}
+            <Link
+              to="/bookmarks"
+              className={`${isActive("/bookmarks")} ${styles.control}`}
+            >
+              <div className={styles.icon}>
+                <Icon lightIcon={bookmarkLight} darkIcon={bookmarkDark} alt="" />
+              </div>
+              <p>Bookmarks</p>
+            </Link>
+          </li>
+          <li>
+            <button className={styles.control} onClick={openModal}>
+              <div className={styles.icon}>
+                <Icon lightIcon={addLight} darkIcon={addDark} alt="" />
+              </div>
+              <p>Add Recipe</p>
+            </button>
+          </li>
+          <li>
+            {user ? (
+              <Link className={styles.profile} to="/profile">
+                My Profile
+              </Link>
+            ) : (
+                <Link className={styles.profile} to="/login">
+                  Login
+                </Link>
+              )}
+          </li>
+        </ul>
+        <div className={styles.navBottom}>
+          <div className={styles.sizes}>
+            <button onClick={decreaseFontSize} className={styles.size}>A-</button>
+            <button onClick={resetFontSize} className={styles.size}>R</button>
+            <button onClick={increaseFontSize} className={styles.size}>A+</button>
+          </div>
+          <FormControlLabel
+            control={
+              <Switch
+                onChange={handleCheck}
+                checked={checked}
+                sx={{
+                  "& .MuiSwitch-switchBase.Mui-checked": {
+                    color: "var(--accent)", // Set the accent color when the switch is checked (on)
+                  },
+                  "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": {
+                    backgroundColor: "var(--accent)", // Change the track background when checked
+                  },
+                }}
+              />
+            }
+            label="Dark Mode"
+            sx={{
+              "& .MuiFormControlLabel-label": {
+                fontFamily: "Lexend, sans-serif",
+                color: "var(--text)",
+              },
+            }}
+          />
+        </div>
+      </nav>
+    </>
+  ) : "");
 }
 
 export default Navbar;

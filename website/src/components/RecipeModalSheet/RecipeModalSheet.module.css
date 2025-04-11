@@ -151,7 +151,7 @@ h1 {
 
 .submit {
   background-color: var(--accent);
-  color: var(--primary);
+  color: var(--text);
   padding: 1rem;
   font-weight: bold;
   border-radius: 5px;

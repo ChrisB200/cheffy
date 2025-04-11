@@ -1,0 +1,25 @@
+.container {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  gap: 2rem;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+.icon {
+  width: 24px;
+  min-width: 24px;
+  padding: 0.8rem;
+  border: solid 1px var(--secondary);
+  border-radius: 21px;
+  height: auto;
+}
+
+.search {
+  border: 1px solid var(--secondary);
+  border-radius: 4px;
+  padding: 0.8rem;
+  width: 100%;
+  max-width: 600px;
+}

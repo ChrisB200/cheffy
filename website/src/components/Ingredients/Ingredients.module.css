@@ -1,0 +1,37 @@
+.container {
+  max-width: 31.25rem;
+  width: 100%;
+  
+}
+
+.title {
+  font-size: var(--font-800);
+  font-weight: normal;
+  margin-bottom: 2rem;
+}
+
+.ingredients {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr;
+  row-gap: 1rem;
+}
+
+.name,
+.amount,
+.unit {
+  color: var(--text);
+}
+
+.name {
+  font-size: var(--font-500);
+}
+
+.amount, .unit {
+  text-align: center;
+}
+
+.amount {
+  color: var(--accent);
+  font-weight: bold;
+}

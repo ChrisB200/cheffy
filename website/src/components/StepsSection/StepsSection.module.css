@@ -1,0 +1,73 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: right;
+}
+
+.area {
+  padding: 1rem;
+  border-radius: 5px;
+  border: 1px solid var(--secondary);
+  resize: vertical;
+}
+
+.addContainer {
+  display: flex;
+  width: 100%;
+  justify-content: right;
+}
+
+.add {
+  background-color: var(--accent);
+  color: var(--text);
+  font-weight: bold;
+  max-width: 200px;
+  border-radius: 5px;
+  grid-column: 3;
+  border: 1px solid var(--accent);
+  transition: background-color 0.2s, color 0.2s;
+  max-width: 7rem;
+  margin-top: 0.5rem;
+}
+
+.add:hover {
+  border: 1px solid var(--accent);
+  background-color: var(--primary);
+  color: var(--accent);
+}
+
+.steps {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 2rem;
+}
+
+.stepHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.stepHeader > p {
+  color: var(--text-2);
+  font-size: var(--font-500);
+  margin-bottom: 0.25rem;
+}
+
+.step > textarea {
+  width: 100%;
+  padding: 1rem;
+  box-sizing: border-box;
+  resize: vertical;
+  border: 1px solid var(--secondary);
+  border-radius: 5px;
+}
+
+.remove {
+  width: fit-content;
+  padding: 1rem;
+  aspect-ratio: 1;
+  color: var(--accent);
+}

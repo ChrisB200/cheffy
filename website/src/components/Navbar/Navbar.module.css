@@ -10,6 +10,7 @@
   background-color: var(--primary);
   box-sizing: border-box;
   padding: 1rem 2rem;
+  border-radius: 4px;
 }
 
 .logo {
@@ -60,6 +61,10 @@ li > a:hover, button:hover {
   cursor: pointer;
 }
 
+li > a > p, li > button > p {
+  color: var(--text);
+}
+
 li > a:active, button:active {
   opacity: 0.5;
 }
@@ -70,7 +75,7 @@ li > a:active, button:active {
 }
 
 .profile {
-  color: var(--secondary);
+  color: var(--text);
   background-color: var(--accent);
   width: 100%;
   padding: 1rem 2rem;
@@ -78,6 +83,8 @@ li > a:active, button:active {
   border-radius: 5px;
   border: 1px solid var(--accent);
   transition: 0.2s background-color, 0.2s color;
+  display: flex;
+  justify-content: center;
 }
 
 .profile:hover {
@@ -95,6 +102,15 @@ li > a:active, button:active {
   flex-direction: column;
   align-items: center;
   gap: 2rem;
+}
+
+.sizes {
+  display: flex;
+  justify-content: space-between;
+}
+
+.sizes {
+  color: var(--text-2);
 }
 
 .switchLabel {

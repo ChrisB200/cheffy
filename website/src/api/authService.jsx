@@ -3,18 +3,10 @@ import {BASE_API_URL} from "../utils/constants";
 
 class AuthService {
   async login(email, password) {
-    try {
-      const response = await httpClient.post(`${BASE_API_URL}/login`, {
-        email,
-        password,
-      });
-
-      if (response.status === 200) {
-        localStorage.setItem("access_token", response.data.token)
-      }
-    } catch (error) {
-      console.log(error)
-    }
+    return await httpClient.post(`${BASE_API_URL}/login`, {
+      email,
+      password,
+    });
   }
 
   logout() {
