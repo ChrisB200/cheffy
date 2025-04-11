@@ -1,4 +1,5 @@
 const models = require("../../sequelize")
+const fs = require('fs');
 
 const getUser = async (req) => {
   const id = req.userId;
@@ -12,4 +13,10 @@ const getUser = async (req) => {
   if (user) return user;
 }
 
-module.exports = { getUser }
+function checkFileExists(file) {
+  return fs.promises.access(file, fs.constants.F_OK)
+           .then(() => true)
+           .catch(() => false)
+}
+
+module.exports = { getUser, checkFileExists }

@@ -6,29 +6,34 @@ module.exports = (sequelize) => {
     {
       id: {
         type: DataTypes.INTEGER,
+        autoIncrement: true,
         primaryKey: true,
-        unique: true,
+        allowNull: false,
       },
       title: {
         type: DataTypes.STRING(40),
         allowNull: false,
       },
       prep: {
-        type: DataTypes.TIME,
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
       cook: {
-        type: DataTypes.TIME,
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
       difficulty: {
         type: DataTypes.ENUM,
         values: ["Beginner", "Intermediate", "Advanced"],
-        allowNull: false
+        allowNull: false,
+      },
+      path: {
+        type: DataTypes.TEXT,
+        allowNull: false,
       },
     },
     {
-      timestamps: false
-    }
-  )
-}
+      timestamps: false,
+    },
+  );
+};

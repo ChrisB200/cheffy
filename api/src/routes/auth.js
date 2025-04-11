@@ -38,11 +38,13 @@ router.post("/login", async (req, res) => {
     const user = await models.user.findOne({ where: {email} });
 
     if (!user) {
+      console.log("no user")
       return res.status(401).json({ error: "Authentication failed" });
     }
 
     const passMatch = await bcrypt.compare(password, user.password);
     if (!passMatch) {
+      console.log("wrong pass")
       return res.status(401).json({ error: "Authentication failed" });
     }
 
@@ -58,11 +60,21 @@ router.post("/login", async (req, res) => {
 });
 
 router.get("/is_authenticated", protectedRoute, async (req, res) => {
+  console.log("hey")
   if (req.currentUser) {
     return res.status(200).json({ authenticated: true });
   }
   return res.status(401).json({ authenticated: false });
 });
+
+
+router.get("/user/current", protectedRoute, async (req, res) => {
+  console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+  if (req.currentUser) {
+    return res.status(200).json({id: req.currentUser.id})
+  }
+  return res.status(404).json({error: "No user logged in"})
+})
 
 
 
