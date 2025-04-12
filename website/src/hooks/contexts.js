@@ -3,6 +3,7 @@ import { CacheContext } from "../contexts/CacheContext";
 import { UserContext } from "../contexts/UserContext";
 import { ThemeContext } from "../contexts/ThemeContext";
 import { NavbarContext } from "../contexts/NavbarContext";
+import { LoadingContext } from "../contexts/LoadingContext";
 
 export const useCache = () => {
   const context = useContext(CacheContext);
@@ -35,3 +36,11 @@ export const useNavbar = () => {
   }
   return context;
 };
+
+export const useLoading = () => {
+  const context = useContext(LoadingContext);
+  if (!context) {
+    throw new Error("useLoading must be used within a LoadingProvider");
+  }
+  return context;
+}

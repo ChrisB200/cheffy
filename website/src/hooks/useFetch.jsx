@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useCache } from "./contexts"
-import axios from "axios";
+import httpClient from "../utils/httpClient";
 
 function keyify(key) {
   return key.map((item) => JSON.stringify(item)).join("-")
@@ -23,7 +23,7 @@ export default function useFetch({ key, initialEnabled=true, cache, ...axiosConf
       setError(false);
       return;
     }
-    axios(axiosConfig)
+    httpClient(axiosConfig)
       .then((response) => {
         setResponse(response);
         if (cache?.enabled) {

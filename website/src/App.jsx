@@ -5,13 +5,15 @@ import ProtectedRoutes from "./utils/protectedRoutes";
 import Register from "./pages/RegisterPage/RegisterPage";
 import { CacheProvider } from "./contexts/CacheContext";
 import { UserProvider } from "./contexts/UserContext";
-import { useTheme } from "./hooks/contexts";
+import { useLoading, useTheme } from "./hooks/contexts";
 import { useEffect } from "react";
 import { NavbarProvider } from "./contexts/NavbarContext";
 import RecipePage from "./pages/RecipePage/RecipePage";
+import LoadingScreen from "./components/LoadingScreen/LoadingScreen";
 
 function App() {
   const { theme } = useTheme();
+  const { loading } = useLoading();
 
   useEffect(() => {
     const body = document.querySelector("body");
@@ -21,20 +23,23 @@ function App() {
   }, [theme])
 
   return (
-    <CacheProvider>
-      <UserProvider>
-        <NavbarProvider>
-          <Routes>
-            <Route path="/login" element={<Login/>} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/" element={<HomePage />} />
-            <Route path="/recipe/:userId/:recipeId" element={<RecipePage/>}/>
-            <Route element={<ProtectedRoutes />}>
-            </Route>
-          </Routes>
-        </NavbarProvider>
-      </UserProvider>
-    </CacheProvider>
+    <>
+      {loading ? <LoadingScreen/> : ""}
+      <CacheProvider>
+        <UserProvider>
+          <NavbarProvider>
+            <Routes>
+              <Route path="/login" element={<Login/>} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/" element={<HomePage />} />
+              <Route path="/recipe/:userId/:recipeId" element={<RecipePage/>}/>
+              <Route element={<ProtectedRoutes />}>
+              </Route>
+            </Routes>
+          </NavbarProvider>
+        </UserProvider>
+      </CacheProvider>
+    </>
   );
 }
 

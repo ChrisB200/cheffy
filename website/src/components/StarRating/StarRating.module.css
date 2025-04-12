@@ -1,0 +1,27 @@
+.container {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.active {
+  color: var(--accent-yellow);
+}
+
+.star {
+  width: 2rem;
+  height: auto;
+}
+
+.star:hover {
+  cursor: pointer;
+}
+
+.star:active {
+  opacity: 0.5;
+}
+
+@media (max-width: 768px) {
+  .container {
+    justify-content: center;
+  }
+}

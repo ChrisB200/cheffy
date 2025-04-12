@@ -3,6 +3,9 @@ import styles from "./RecipesGrid.module.css";
 import { BASE_API_URL } from "../../utils/constants";
 import useFetch from "../../hooks/useFetch";
 import RecipePreview from "../RecipePreview/RecipePreview";
+import Action from "../Action/Action";
+import Heart from "../../assets/heart.svg?react";
+import Bookmark from "../../assets/bookmark.svg?react";
 
 function RecipesGrid() {
   const { data: recipes, error } = useFetch({
@@ -19,7 +22,13 @@ function RecipesGrid() {
   return (
     <div className={styles.container}>
       {recipes?.map((recipe) => {
-        return <RecipePreview key={recipe.id} recipe={recipe} />;
+        return (
+          <>
+            <div className={styles.content}>
+              <RecipePreview key={recipe.id} recipe={recipe} />
+            </div>
+          </>
+        );
       })}
     </div>
   );

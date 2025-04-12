@@ -1,13 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./RecipeDetails.module.css";
 import Star from "../../assets/star.svg?react";
 import Cook from "../../assets/cook.svg?react";
 import Clock from "../../assets/clock.svg?react";
 import Bookmark from "../../assets/bookmark.svg?react";
+import BookmarkFilled from "../../assets/bookmark-fill.svg?react"
 import Heart from "../../assets/heart.svg?react";
 import { convertTime } from "../../utils/helpers";
+import StarRating from "../StarRating/StarRating";
+import httpClient from "../../utils/httpClient";
 
 function RecipeDetails({ recipe }) {
+  const [isBookmarked, setIsBookmarked] = useState(false);
+  const handleBookmarkClicked = (e) => {
+    e.preventDefault()
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.content}>
@@ -15,32 +23,33 @@ function RecipeDetails({ recipe }) {
         <h1 className={styles.title}>{recipe.title}</h1>
         <div className={styles.info}>
           <div>
-            <Star className={styles.icon}/>
-            <p>1</p>
+            <Star className={styles.icon} />
+            <p>
+              {!parseFloat(recipe.averageRating)
+                ? "No Ratings"
+                : parseFloat(recipe.averageRating)}
+            </p>
             <hr />
           </div>
-          <hr/>
+          <hr />
           <div>
-            <Clock className={styles.icon}/>
+            <Clock className={styles.icon} />
             <p>{convertTime(recipe.prep)}</p>
             <hr />
           </div>
-          <hr/>
+          <hr />
           <div>
-            <Cook className={styles.icon}/>
+            <Cook className={styles.icon} />
             <p>{convertTime(recipe.cook)}</p>
           </div>
         </div>
         <div className={styles.actions}>
           <button className={`${styles.button} ${styles.bookmark}`}>
-            <Bookmark className={styles.icon}/>
+            <Bookmark className={styles.icon} />
             <p>Bookmark</p>
           </button>
-          <button className={`${styles.button} ${styles.like}`}>
-            <Heart className={styles.icon}/>
-            <p>Like</p>
-          </button>
         </div>
+        <StarRating recipe={recipe} />
       </div>
     </div>
   );

@@ -13,7 +13,7 @@ function Ingredients({ ingredients }) {
               <hr/>
               <p className={styles.amount}>{ingredient.amount}</p>
               <hr/>
-              <p className={styles.unit}>{convertUnit(ingredient.unit.pluralAbbreviation)}</p>
+              <p className={styles.unit}>{ingredient.unit.pluralAbbreviation}</p>
             </>
           );
         })}

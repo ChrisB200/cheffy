@@ -30,6 +30,10 @@
   height: auto;
 }
 
+.ratings {
+  color: var(--text-2);
+}
+
 .info {
   display: flex;
   gap: 2rem;
@@ -53,6 +57,8 @@
 }
 
 .button {
+  display: flex;
+  align-items: center;
   width: fit-content;
   gap: 1rem;
   border-radius: 40px;

@@ -28,8 +28,8 @@ const modelDefiners = [
   require("./models/ingredient.model"),
   require("./models/rating.model"),
   require("./models/like.model"),
-  require("./models/hashtag.model"),
-  require("./models/recipeHashtag.model")
+  require("./models/cuisine.model"),
+  require("./models/bookmark.model"),
 ];
 
 for (const modelDefiner of modelDefiners) {

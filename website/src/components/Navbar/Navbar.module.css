@@ -13,6 +13,10 @@
   border-radius: 4px;
 }
 
+a {
+  text-decoration: none;
+}
+
 .logo {
   width: 90px;
   height: auto;
@@ -22,11 +26,11 @@
   width: 100%;
 }
 
-ul, a, button, li {
-  all: unset;
+.item {
+  list-style: none;
 }
 
-.container > ul {
+.list {
   display: flex;
   flex-direction: column;
   row-gap: 3rem;
@@ -39,13 +43,13 @@ ul, a, button, li {
   height: auto;
 }
 
-.icon > img {
+.icon > * {
   width: 100%;
   height: auto;
 }
 
 
-li > a, button{
+.control, .sizes > button {
   display: flex;
   width: 100%;
   align-items: center;
@@ -53,19 +57,20 @@ li > a, button{
   padding: 1rem 2rem;
   box-sizing: border-box;
   border: solid 1px var(--primary);
+  background-color: var(--primary);
 }
 
-li > a:hover, button:hover {
+.item > a:hover, .item > button:hover, .sizes > button:hover {
   border: solid 1px var(--secondary);
   border-radius: 5px;
   cursor: pointer;
 }
 
-li > a > p, li > button > p {
+.item > a > p, .item > button > p {
   color: var(--text);
 }
 
-li > a:active, button:active {
+.item > a:active, button:active {
   opacity: 0.5;
 }
 
@@ -83,6 +88,7 @@ li > a:active, button:active {
   border-radius: 5px;
   border: 1px solid var(--accent);
   transition: 0.2s background-color, 0.2s color;
+  box-sizing: border-box;
   display: flex;
   justify-content: center;
 }

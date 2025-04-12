@@ -2,7 +2,7 @@ const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize) => {
   sequelize.define(
-    "hashtag",
+    "cuisine",
     {
       id: {
         type: DataTypes.INTEGER,
@@ -10,10 +10,14 @@ module.exports = (sequelize) => {
         primaryKey: true,
         allowNull: false,
       },
-      name: DataTypes.STRING(15),
+      name: {
+        type: DataTypes.STRING(40),
+        allowNull: false,
+      },
     },
     {
       timestamps: false
     }
   )
 }
+

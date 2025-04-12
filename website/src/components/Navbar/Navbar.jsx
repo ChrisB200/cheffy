@@ -1,10 +1,4 @@
 import React, { useEffect, useState } from "react";
-import addDark from "../../assets/addDark.png";
-import bookmarkDark from "../../assets/bookmarkDark.png";
-import homeDark from "../../assets/homeDark.png";
-import addLight from "../../assets/addLight.png";
-import bookmarkLight from "../../assets/bookmarkLight.png";
-import homeLight from "../../assets/homeLight.png";
 import cheffyLogo from "../../assets/cheffy-logo-256x256.png";
 import styles from "./Navbar.module.css";
 import { Link, useLocation } from "react-router-dom";
@@ -12,6 +6,9 @@ import { FormControlLabel, Switch } from "@mui/material";
 import { useNavbar, useTheme, useUser } from "../../hooks/contexts";
 import Icon from "../Icon/Icon";
 import RecipeModalSheet from "../RecipeModalSheet/RecipeModalSheet"
+import Bookmark from "../../assets/bookmark.svg?react"
+import Add from "../../assets/add.svg?react"
+import Home from "../../assets/home.svg?react"
 
 function Navbar() {
   const location = useLocation();
@@ -59,35 +56,34 @@ function Navbar() {
           <img src={cheffyLogo} alt="Cheffy" />
         </div>
         <ul className={styles.list}>
-          <li>
+          <li className={styles.item}>
             <Link to="/" className={`${isActive("/")} ${styles.control}`}>
               <div className={styles.icon}>
-                <Icon lightIcon={homeLight} darkIcon={homeDark} alt="" />
+                <Home/>
               </div>
               <p>My Feed</p>
             </Link>
           </li>
-          <li>
-            {" "}
+          <li className={styles.item}>
             <Link
               to="/bookmarks"
               className={`${isActive("/bookmarks")} ${styles.control}`}
             >
               <div className={styles.icon}>
-                <Icon lightIcon={bookmarkLight} darkIcon={bookmarkDark} alt="" />
+                <Bookmark/>
               </div>
               <p>Bookmarks</p>
             </Link>
           </li>
-          <li>
+          <li className={styles.item}>
             <button className={styles.control} onClick={openModal}>
               <div className={styles.icon}>
-                <Icon lightIcon={addLight} darkIcon={addDark} alt="" />
+                <Add/>
               </div>
               <p>Add Recipe</p>
             </button>
           </li>
-          <li>
+          <li className={styles.item}>
             {user ? (
               <Link className={styles.profile} to="/profile">
                 My Profile

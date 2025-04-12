@@ -16,6 +16,7 @@
 
   --accent: #d97474;
   --accent-text: #ffffff;
+  --accent-yellow: #efc435;
   --text-2: #4b4b4b;
 }
 
@@ -44,6 +45,10 @@ body {
   padding: 0;
   font-family: "Lexend", sans-serif;
   transition: font-size 0.1s;
+}
+
+button:hover {
+  cursor: pointer;
 }
 
 h1 {
