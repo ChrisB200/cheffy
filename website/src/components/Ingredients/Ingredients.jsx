@@ -1,5 +1,6 @@
 import styles from "./Ingredients.module.css";
 import { convertUnit } from "../../utils/helpers"
+import React from "react";
 
 function Ingredients({ ingredients }) {
   return (
@@ -8,13 +9,13 @@ function Ingredients({ ingredients }) {
       <div className={styles.ingredients}>
         {ingredients.map((ingredient) => {
           return (
-            <>
+            <React.Fragment key={ingredient.id}>
               <p className={styles.name}>{ingredient.name}</p>
               <hr/>
               <p className={styles.amount}>{ingredient.amount}</p>
               <hr/>
               <p className={styles.unit}>{ingredient.unit.pluralAbbreviation}</p>
-            </>
+            </React.Fragment>
           );
         })}
       </div>

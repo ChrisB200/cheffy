@@ -18,8 +18,9 @@ function RecipePreview({ recipe }) {
         <img src={`${BASE_API_URL}/${recipe.path}`} />
       </div>
       <div className={styles.details}>
-        <p>@{recipe.user.username}</p>
+        <p className={styles.user}>@{recipe.user.username}</p>
         <h3>{recipe.title}</h3>
+        <p className={styles.cuisine}>{recipe.cuisine.name}</p>
       </div>
     </div>
   );

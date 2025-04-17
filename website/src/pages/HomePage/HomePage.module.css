@@ -1,12 +1,32 @@
+.burger {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 1rem;
+  width: 2rem;
+  height: 2rem;
+}
+
+.burger:hover {
+  cursor: pointer;
+}
+
+.burger > svg {
+  width: 100%;
+  height: auto;
+  color: var(--text);
+}
+
+.burger:active > svg {
+  color: var(--accent);
+}
+
 .container {
   display: flex;
   width: 100dvw;
   height: 100dvh;
 }
 
-.nav {
-  padding: 2rem;
-}
 
 .container > main {
   overflow-y: scroll;

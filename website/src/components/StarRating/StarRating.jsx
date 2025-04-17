@@ -5,9 +5,11 @@ import useFetch from "../../hooks/useFetch";
 import { BASE_API_URL } from "../../utils/constants";
 import { useEffect, useState } from "react";
 import httpClient from "../../utils/httpClient";
+import { useNavigate } from "react-router-dom";
 
 function StarRating({ recipe }) {
   const { user } = useUser();
+  const navigate = useNavigate();
   const [current, setCurrent] = useState(null);
   const [userRating, setUserRating] = useState(null);
   const [rating, setRating] = useState(null);
@@ -62,6 +64,10 @@ function StarRating({ recipe }) {
         window.location.reload()
       })
       .catch((error) => {
+        if (error.status === 401) {
+          alert("You must be logged in to rate a recipe")
+          navigate("/login")
+        }
         console.log(error);
       })
       .finally(() => {

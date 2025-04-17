@@ -12,7 +12,7 @@ function RecipesGrid() {
     url: `${BASE_API_URL}/recipes`,
     method: "get",
     withCredentials: true,
-    key: ["get", "recpies"],
+    key: ["get", "recipies"],
     cache: {
       enabled: true,
       ttl: 60,
@@ -23,11 +23,7 @@ function RecipesGrid() {
     <div className={styles.container}>
       {recipes?.map((recipe) => {
         return (
-          <>
-            <div className={styles.content}>
-              <RecipePreview key={recipe.id} recipe={recipe} />
-            </div>
-          </>
+            <RecipePreview key={recipe.id} recipe={recipe} />
         );
       })}
     </div>

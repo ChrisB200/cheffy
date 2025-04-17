@@ -1,9 +1,10 @@
-import { useEffect, createContext } from "react";
+import { useMemo, useRef, createContext, useEffect } from "react";
 
 export const CacheContext = createContext(null);
 
 export function CacheProvider({ children }) {
-  const map = new Map();
+  const mapRef = useRef(new Map());
+  const map = mapRef.current;
 
   function getCache(key) {
     const value = map.get(key);
@@ -16,10 +17,9 @@ export function CacheProvider({ children }) {
   }
 
   function setCache(key, value, ttl = 10) {
-    var t = new Date();
-    t.setSeconds(t.getSeconds() + ttl);
+    const expiry = new Date(Date.now() + ttl * 1000);
     map.set(key, {
-      expiry: t,
+      expiry,
       data: value,
     });
   }
@@ -32,12 +32,16 @@ export function CacheProvider({ children }) {
     map.delete(key);
   }
 
-  const contextValue = {
+  useEffect(() => {
+    console.log(map)
+  }, [map])
+
+  const contextValue = useMemo(() => ({
     getCache,
     setCache,
     clearCache,
     deleteCache,
-  };
+  }), []);
 
   return (
     <CacheContext.Provider value={contextValue}>
@@ -45,5 +49,4 @@ export function CacheProvider({ children }) {
     </CacheContext.Provider>
   );
 }
-
 

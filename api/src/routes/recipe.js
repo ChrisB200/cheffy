@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const { Op } = require("sequelize")
 const { models } = require("../../sequelize");
 const { protectedRoute } = require("../middleware/authMiddleware");
 const storage = require("../middleware/multerMiddleware");
@@ -109,30 +110,13 @@ router.get("/recipes", async (req, res) => {
           model: models.user,
           attributes: ["id", "username"],
         },
+        {
+          model: models.cuisine,
+        },
       ],
     });
     res.status(200).json(recipes);
   } catch (error) {
-    res.status(500).json(error);
-  }
-});
-
-router.get("/recipe/like", protectedRoute, async (req, res) => {
-  try {
-    const like = await models.likes.count({
-      where: {
-        recipeId: req.query.id,
-        userId: req.userId,
-      },
-    });
-
-    if (like === 1) {
-      res.status(200).json(true);
-    } else {
-      res.status(400).json(false);
-    }
-  } catch (error) {
-    console.log(error);
     res.status(500).json(error);
   }
 });
@@ -185,6 +169,25 @@ router.get("/recipe/rating", protectedRoute, async (req, res) => {
   }
 });
 
+router.get("/recipe/bookmark/:id", protectedRoute, async (req, res) => {
+  try {
+    const bookmark = await models.bookmarks.findOne({
+      where: {
+        recipeId: req.params.id,
+        userId: req.currentUser.id,
+      },
+    });
+
+    if (!bookmark) {
+      return res.status(200).json({ bookmark: false });
+    }
+
+    res.status(200).json({ bookmark: true });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 router.put("/recipe/rating", protectedRoute, async (req, res) => {
   try {
     if (!req.query.id) {
@@ -231,14 +234,17 @@ router.put("/recipe/rating", protectedRoute, async (req, res) => {
 router.post("/recipe/bookmark", protectedRoute, async (req, res) => {
   try {
     if (!req.query.id) {
-      res.status(400).json({ error: "A recipe ID was not given" });
+      return res.status(400).json({ error: "A recipe ID was not given" });
     }
 
     await models.bookmarks.create({
       userId: req.currentUser.id,
       recipeId: req.query.id,
     });
-    res.status(200).json({ message: "Created a new bookmark successfully" });
+
+    res
+      .status(200)
+      .json({ message: "Created a new bookmark successfully" });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -253,14 +259,45 @@ router.delete("/recipe/bookmark", protectedRoute, async (req, res) => {
     await models.bookmarks.destroy({
       where: {
         recipeId: req.query.id,
-        userId: req.currentUser.id
-      } 
-    })
+        userId: req.currentUser.id,
+      },
+    });
 
-    res.status(204).send()
+    res.status(204).send();
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+router.get("/recipe/search", async (req, res) => {
+  try {
+
+    if (!req.query.search) {
+      return res.status(200);
+    }
+
+    const recipes = await models.recipe.findAll({
+      include: [
+        {
+          model: models.cuisine,
+        },
+        {
+          model: models.user,
+          attributes: ["username"]
+        }
+      ],
+      where: {
+        [Op.or]: [
+          { title: { [Op.like]: `%${req.query.search}%` } },
+          { "$cuisine.name$": { [Op.like]: `%${req.query.search}%` } },
+        ],
+      },
+    });
+
+    res.status(200).json(recipes)
   } catch (error) {
     res.status(500).json({error: error.message})
   }
-})
+});
 
 module.exports = router;

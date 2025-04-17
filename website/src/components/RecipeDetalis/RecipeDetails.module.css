@@ -8,14 +8,37 @@
   flex-direction: column;
   gap: 1.5rem;
 }
+
 .user {
   border: 1px solid var(--secondary);
-  width: fit-content;
   border-radius: 5px;
+  width: fit-content;
+  padding: 1rem 2rem;
+  color: var(--text);
+  background-color: var(--secondary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.user:hover {
+  background-color: var(--text);
+  color: var(--primary);
 }
 
 .difficulty {
   color: var(--text-2);
+}
+
+.group {
+  position: relative;
+  width: fit-content;
+}
+
+.cuisine {
+  position: absolute;
+  top: 0;
+  right: 0;
+  color: var(--text-2);
+  font-weight: bold;
 }
 
 .title {

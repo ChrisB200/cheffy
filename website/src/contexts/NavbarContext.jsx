@@ -1,20 +1,29 @@
-import { createContext, useState, useEffect} from "react";
+import { createContext, useState, useEffect, useRef} from "react";
 
 export const NavbarContext = createContext(null);
 
 export const NavbarProvider = ({ children }) => {
   const [isNavbarOpen, setIsNavbarOpen] = useState(false);
+  const userToggledRef = useRef(false);
 
   const toggleNavbar = () => {
     setIsNavbarOpen((prev) => !prev);
   };
 
+
+  const userToggleNavbar = () => {
+    userToggledRef.current = true;
+    toggleNavbar();
+  };
+
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth <= 1100) {
-        setIsNavbarOpen(false);
-      } else {
-        setIsNavbarOpen(true);
+      if (!userToggledRef.current) {
+        if (window.innerWidth <= 1100) {
+          setIsNavbarOpen(false);
+        } else {
+          setIsNavbarOpen(true);
+        }
       }
     };
 
@@ -26,7 +35,7 @@ export const NavbarProvider = ({ children }) => {
   }, []);
 
   return (
-    <NavbarContext.Provider value={{ isNavbarOpen, toggleNavbar }}>
+    <NavbarContext.Provider value={{ isNavbarOpen, toggleNavbar, userToggleNavbar }}>
       {children}
     </NavbarContext.Provider>
   );

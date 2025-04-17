@@ -11,11 +11,10 @@ function Steps({ steps }) {
         {steps.map((step, index) => {
           let i = (index += 1);
           return (
-            <>
-              <p className={styles.instruction} key={index}>
-                <span className={styles.index}>{i}. </span>{step.instruction}
-              </p>
-            </>
+            <p className={styles.instruction} key={index}>
+              <span className={styles.index}>{i}. </span>
+              {step.instruction}
+            </p>
           );
         })}
       </div>

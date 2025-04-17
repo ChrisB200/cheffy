@@ -25,12 +25,12 @@
   border-radius: 5px;
   object-fit: cover;
   transition: transform 0.3s ease;
+  background-color: var(--secondary);
 }
 
 .container:hover .preview > img {
   transform: scale(1.05); 
 }
-
 
 .details {
   display: flex;
@@ -41,7 +41,7 @@
   flex-direction: column;
 }
 
-.details > p {
+.user, .cuisine {
   font-size: var(--font-350);
   color: var(--text-2);
 }
@@ -49,4 +49,5 @@
 .details > h3 {
   font-size: var(--font-700);
   text-align: center;
+  font-weight: bold;
 }

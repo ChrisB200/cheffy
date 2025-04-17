@@ -13,7 +13,6 @@ const sequelize = new Sequelize({
   password: DB_PASSWORD,
   host: DB_HOST,
   port: 3306,
-  logging: console.log
 });
 
 const connectDB = async () => {

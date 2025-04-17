@@ -5,6 +5,7 @@ const auth = require("./routes/auth");
 const unit = require("./routes/unit");
 const recipe = require("./routes/recipe");
 const sequelize = require("../sequelize");
+const morgan = require("morgan");
 
 dotenv.config();
 
@@ -14,6 +15,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("uploads"))
+app.use(morgan("dev"))
 app.use(cors({
   origin: 'http://192.168.0.67:5173',
   credentials: true

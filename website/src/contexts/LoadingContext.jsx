@@ -21,8 +21,12 @@ export const LoadingProvider = ({ children }) => {
     setLoading(false);
   }
 
+  const changeLoading = (loading) => {
+    setLoading(loading)
+  }
+
   return (
-    <LoadingContext.Provider value={{ loading, setLoading, setLoadingTrue, setLoadingFalse, toggleLoading }}>
+    <LoadingContext.Provider value={{ loading, setLoadingTrue, setLoadingFalse, toggleLoading, changeLoading}}>
       {children}
     </LoadingContext.Provider>
   )

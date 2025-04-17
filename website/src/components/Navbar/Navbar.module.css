@@ -1,3 +1,24 @@
+.background {
+  position: absolute;
+  z-index: 1;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  background-color: #000000;
+  opacity: 0.5;
+}
+.collapsed {
+  width: 0;
+  padding: 0;
+}
+
+.expanded {
+  padding: 1rem 2rem;
+  width: 100%;
+  transition: width 0.3s ease;
+}
+
 .container {
   display: flex;
   flex-direction: column;
@@ -5,12 +26,34 @@
   justify-content: space-between;
   height: 100%;
   max-width: 20rem;
-  width: 100%;
   border: 1px solid var(--secondary);
   background-color: var(--primary);
   box-sizing: border-box;
-  padding: 1rem 2rem;
   border-radius: 4px;
+  position: relative;
+}
+
+.burger {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 1rem;
+  width: 2rem;
+  height: 2rem;
+}
+
+.burger:hover {
+  cursor: pointer;
+}
+
+.burger>svg {
+  width: 100%;
+  height: auto;
+  color: var(--text);
+}
+
+.burger:active>svg {
+  color: var(--accent);
 }
 
 a {
@@ -22,7 +65,7 @@ a {
   height: auto;
 }
 
-.logo > img {
+.logo>img {
   width: 100%;
 }
 
@@ -43,13 +86,13 @@ a {
   height: auto;
 }
 
-.icon > * {
+.icon>* {
   width: 100%;
   height: auto;
 }
 
-
-.control, .sizes > button {
+.control,
+.sizes>button {
   display: flex;
   width: 100%;
   align-items: center;
@@ -60,17 +103,21 @@ a {
   background-color: var(--primary);
 }
 
-.item > a:hover, .item > button:hover, .sizes > button:hover {
+.item>a:hover,
+.item>button:hover,
+.sizes>button:hover {
   border: solid 1px var(--secondary);
   border-radius: 5px;
   cursor: pointer;
 }
 
-.item > a > p, .item > button > p {
+.item>a>p,
+.item>button>p {
   color: var(--text);
 }
 
-.item > a:active, button:active {
+.item>a:active,
+button:active {
   opacity: 0.5;
 }
 
@@ -87,7 +134,9 @@ a {
   text-align: center;
   border-radius: 5px;
   border: 1px solid var(--accent);
-  transition: 0.2s background-color, 0.2s color;
+  transition:
+    0.2s background-color,
+    0.2s color;
   box-sizing: border-box;
   display: flex;
   justify-content: center;
@@ -121,4 +170,21 @@ a {
 
 .switchLabel {
   font-family: "Lexend", sans-serif;
+}
+
+@keyframes slide-in {
+  from {
+    translate: -100% 0;
+  }
+
+  to {
+    translate: 0 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    z-index: 3;
+    position: absolute;
+  }
 }

@@ -18,7 +18,6 @@ function App() {
   useEffect(() => {
     const body = document.querySelector("body");
     body.classList.remove(theme === "dark" ? "light": "dark");
-    console.log(theme)
     body.classList.add(theme)
   }, [theme])
 
