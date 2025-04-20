@@ -1,17 +1,8 @@
 import { useContext } from "react";
-import { CacheContext } from "../contexts/CacheContext";
 import { UserContext } from "../contexts/UserContext";
 import { ThemeContext } from "../contexts/ThemeContext";
 import { NavbarContext } from "../contexts/NavbarContext";
 import { LoadingContext } from "../contexts/LoadingContext";
-
-export const useCache = () => {
-  const context = useContext(CacheContext);
-  if (!context) {
-    throw new Error("useCache must be used within a CacheProvider");
-  }
-  return context;
-};
 
 export const useUser = () => {
   const context = useContext(UserContext);

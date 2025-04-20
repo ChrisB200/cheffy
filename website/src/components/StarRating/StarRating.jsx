@@ -1,11 +1,12 @@
 import styles from "./StarRating.module.css";
 import Star from "../../assets/star.svg?react";
 import { useLoading, useUser } from "../../hooks/contexts";
-import useFetch from "../../hooks/useFetch";
 import { BASE_API_URL } from "../../utils/constants";
 import { useEffect, useState } from "react";
 import httpClient from "../../utils/httpClient";
 import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
 function StarRating({ recipe }) {
   const { user } = useUser();
@@ -15,15 +16,18 @@ function StarRating({ recipe }) {
   const [rating, setRating] = useState(null);
   const [isHovering, setIsHovering] = useState(false);
   const { setLoadingTrue, setLoadingFalse } = useLoading();
-  const { data, error, loading } = useFetch({
-    url: `${BASE_API_URL}/recipe/rating?id=${recipe.id}`,
-    method: "get",
-    withCredentials: true,
-    key: ["get", "recipe", "rating", recipe.id, user?.id],
-    cache: {
-      enabled: true,
-      ttl: 60,
-    },
+
+  const fetchRating = async () => {
+    const { data } = await httpClient.get(`${BASE_API_URL}/recipe/rating?id=${recipe.id}`, {
+      withCredentials: true,
+    });
+    return data;
+  };
+
+  const { data, error, isLoading } = useQuery({
+    queryKey: ["get", "recipe", "rating", recipe.id, user?.id],
+    queryFn: fetchRating,
+    staleTime: 60 * 1000,
   });
 
   const onHover = (order) => {
@@ -61,12 +65,12 @@ function StarRating({ recipe }) {
     httpClient
       .put(`${BASE_API_URL}/recipe/rating?id=${recipe.id}&number=${order}`)
       .then(() => {
-        window.location.reload()
+        window.location.reload();
       })
       .catch((error) => {
         if (error.status === 401) {
-          alert("You must be logged in to rate a recipe")
-          navigate("/login")
+          alert("You must be logged in to rate a recipe");
+          navigate("/login");
         }
         console.log(error);
       })
@@ -124,3 +128,4 @@ function StarRating({ recipe }) {
 }
 
 export default StarRating;
+

@@ -19,15 +19,15 @@
 
 .add {
   background-color: var(--accent);
-  color: var(--text);
+  color: var(--accent-text);
   font-weight: bold;
-  max-width: 200px;
   border-radius: 5px;
   grid-column: 3;
   border: 1px solid var(--accent);
   transition: background-color 0.2s, color 0.2s;
   max-width: 7rem;
   margin-top: 0.5rem;
+  padding: 0.5rem 2rem;
 }
 
 .add:hover {

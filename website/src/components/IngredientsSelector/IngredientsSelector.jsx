@@ -1,24 +1,25 @@
 import React, { useEffect, useState } from "react";
 import styles from "./IngredientsSelector.module.css";
-import useFetch from "../../hooks/useFetch";
 import { BASE_API_URL } from "../../utils/constants";
+import httpClient from "../../utils/httpClient";
+import { useQuery } from "@tanstack/react-query";
 
 function IngredientsSelector({ ingredients, setIngredients }) {
-  const { data: units, error } = useFetch({
-    url: `${BASE_API_URL}/units`,
-    method: "get",
-    withCredentials: true,
-    key: ["get", "units"],
-    cache: {
-      enabled: true,
-      ttl: 400,
-    },
+  const fetchUnits = async () => {
+    const { data } = await httpClient.get(`${BASE_API_URL}/units`);
+    return data;
+  };
+
+  const { data: units, error } = useQuery({
+    queryKey: ["get", "units"],
+    queryFn: fetchUnits,
+    staleTime: 400 * 1000,
   });
 
   const [currentIngredient, setCurrentIngredient] = useState({
     name: "",
     amount: 0,
-    unit: null, // Store full unit object instead of just abbreviation
+    unit: null,
   });
 
   const selectChange = (e, index) => {
@@ -84,26 +85,19 @@ function IngredientsSelector({ ingredients, setIngredients }) {
     });
   };
 
-  useEffect(() => {
-    console.log(units);
-  }, [units]);
-
   return (
-    <>
+    <div>
       <div className={styles.container}>
         {ingredients.map((ingredient, i) => {
           return (
-            <>
+            <div key={`${ingredient.name}-${i}`} className={styles.ingredientContainer}>
               <div className={styles.removeContainer}>
-                <p key={`${ingredient.name}-${i}`} className={styles.ingredient}>
-                  {ingredient.name}
-                </p>
+                <p className={styles.ingredient}>{ingredient.name}</p>
                 <button onClick={(e) => handleRemove(e, i)} className={styles.remove}>
                   -
                 </button>
               </div>
               <input
-                key={`${ingredient.amount}-${i}`}
                 className={styles.amount}
                 inputMode="decimal"
                 onChange={(e) => amountChange(e, i)}
@@ -112,21 +106,21 @@ function IngredientsSelector({ ingredients, setIngredients }) {
                 type="number"
               />
               <select
-                key={`${ingredient.unit?.abbreviation || ""}-${i}`}
                 className={styles.select}
                 value={ingredient.unit?.abbreviation || ""}
                 onChange={(e) => selectChange(e, i)}
               >
                 <option value="" disabled>Select a unit</option>
-                {units?.map((unit) => {
-                  return (
-                    <option key={unit.id} value={unit.abbreviation}>
-                      {unit.name}
-                    </option>
-                  );
-                })}
+                {Array.isArray(units) &&
+                  units.map((unit) => {
+                    return (
+                      <option key={unit.id} value={unit.abbreviation}>
+                        {unit.name}
+                      </option>
+                    );
+                  })}
               </select>
-            </>
+            </div>
           );
         })}
 
@@ -154,19 +148,22 @@ function IngredientsSelector({ ingredients, setIngredients }) {
           onChange={handleChange}
         >
           <option value="" disabled>Select a unit</option>
-          {units?.map((unit) => {
-            return (
-              <option key={unit.id} value={unit.abbreviation}>
-                {unit.name}
-              </option>
-            );
-          })}
+          {Array.isArray(units) &&
+            units.map((unit) => {
+              return (
+                <option key={unit.id} value={unit.abbreviation}>
+                  {unit.name}
+                </option>
+              );
+            })}
         </select>
+      </div>
+      <div className={styles.addContainer}>
         <button onClick={handleAdd} className={styles.add}>
           Add
         </button>
       </div>
-    </>
+    </div>
   );
 }
 

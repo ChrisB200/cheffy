@@ -3,7 +3,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  max-width: 700px;
+  max-width: 800px;
   width: 100%;
 }
 
@@ -26,7 +26,7 @@ a:hover {
   height: auto;
 }
 
-form {
+.form {
   display: flex;
   flex-direction: column;
   padding: 3rem;
@@ -73,9 +73,6 @@ hr {
 }
 
 .create {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   background-color: var(--accent);
   color: var(--text);
   border-radius: 4px;
@@ -84,10 +81,11 @@ hr {
   font-weight: bold;
   padding: 1rem 2rem;
   transition: color 0.2s, background-color 0.2s;
-  min-width: 200px;
-  width: fit-content;
+  min-width: fit-content;
+  width: 100%;
   text-align: center;
-
+  max-width: 200px;
+  color: var(--accent-text);
 }
 
 .create:hover {
@@ -111,8 +109,8 @@ hr {
   font-size: var(--font-350);
 }
 
-.create {
-  width: fit-content;
+.actions > p {
+  color: var(--text);
 }
 
 .clickable {
@@ -121,4 +119,10 @@ hr {
 
 .error {
   border: solid 1px var(--error);
+}
+
+@media (max-width: 768px) {
+  .form {
+    padding: 1rem;
+  }
 }

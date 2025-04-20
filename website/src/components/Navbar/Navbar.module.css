@@ -1,13 +1,14 @@
 .background {
   position: absolute;
-  z-index: 1;
   width: 100vw;
   height: 100vh;
   top: 0;
   left: 0;
   background-color: #000000;
   opacity: 0.5;
+  z-index: 4;
 }
+
 .collapsed {
   width: 0;
   padding: 0;
@@ -184,7 +185,7 @@ button:active {
 
 @media (max-width: 768px) {
   .container {
-    z-index: 3;
+    z-index: 5;
     position: absolute;
   }
 }

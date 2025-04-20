@@ -70,9 +70,11 @@ function Navbar() {
             <div className={styles.burger} onClick={userToggleNavbar}>
               <Burger />
             </div>
-            <div className={styles.logo}>
-              <img src={cheffyLogo} alt="Cheffy" />
-            </div>
+            <Link to="/">
+              <div className={styles.logo}>
+                <img src={cheffyLogo} alt="Cheffy" />
+              </div>
+            </Link>
             <ul className={styles.list}>
               <li className={styles.item}>
                 <Link to="/" className={`${isActive("/")} ${styles.control}`}>

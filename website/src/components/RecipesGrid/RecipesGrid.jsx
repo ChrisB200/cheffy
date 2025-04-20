@@ -1,29 +1,32 @@
-import React, { useEffect } from "react";
+import React from "react";
+import { useQuery } from "@tanstack/react-query";
 import styles from "./RecipesGrid.module.css";
 import { BASE_API_URL } from "../../utils/constants";
-import useFetch from "../../hooks/useFetch";
 import RecipePreview from "../RecipePreview/RecipePreview";
-import Action from "../Action/Action";
-import Heart from "../../assets/heart.svg?react";
-import Bookmark from "../../assets/bookmark.svg?react";
+import axios from "axios";
+import useChangeLoading from "../../hooks/useChangeLoading";
 
 function RecipesGrid() {
-  const { data: recipes, error } = useFetch({
-    url: `${BASE_API_URL}/recipes`,
-    method: "get",
-    withCredentials: true,
-    key: ["get", "recipies"],
-    cache: {
-      enabled: true,
-      ttl: 60,
-    },
+  const fetchRecipes = async () => {
+    const { data } = await axios.get(`${BASE_API_URL}/recipes`, {
+      withCredentials: true,
+    });
+    return data;
+  };
+
+  const { data: recipes, isLoading } = useQuery({
+    queryKey: ["get", "recipies"],
+    queryFn: fetchRecipes,
+    staleTime: 60 * 1000,
   });
+  useChangeLoading(isLoading);
+
 
   return (
     <div className={styles.container}>
       {recipes?.map((recipe) => {
         return (
-            <RecipePreview key={recipe.id} recipe={recipe} />
+          <RecipePreview key={recipe.id} recipe={recipe} />
         );
       })}
     </div>
@@ -31,3 +34,4 @@ function RecipesGrid() {
 }
 
 export default RecipesGrid;
+

@@ -3,7 +3,6 @@ import Login from "./pages/LoginPage/LoginPage";
 import HomePage from "./pages/HomePage/HomePage";
 import ProtectedRoutes from "./utils/protectedRoutes";
 import Register from "./pages/RegisterPage/RegisterPage";
-import { CacheProvider } from "./contexts/CacheContext";
 import { UserProvider } from "./contexts/UserContext";
 import { useLoading, useTheme } from "./hooks/contexts";
 import { useEffect } from "react";
@@ -17,27 +16,24 @@ function App() {
 
   useEffect(() => {
     const body = document.querySelector("body");
-    body.classList.remove(theme === "dark" ? "light": "dark");
-    body.classList.add(theme)
-  }, [theme])
+    body.classList.remove(theme === "dark" ? "light" : "dark");
+    body.classList.add(theme);
+  }, [theme]);
 
   return (
     <>
-      {loading ? <LoadingScreen/> : ""}
-      <CacheProvider>
-        <UserProvider>
-          <NavbarProvider>
-            <Routes>
-              <Route path="/login" element={<Login/>} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/" element={<HomePage />} />
-              <Route path="/recipe/:userId/:recipeId" element={<RecipePage/>}/>
-              <Route element={<ProtectedRoutes />}>
-              </Route>
-            </Routes>
-          </NavbarProvider>
-        </UserProvider>
-      </CacheProvider>
+      {loading ? <LoadingScreen /> : ""}
+      <UserProvider>
+        <NavbarProvider>
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/" element={<HomePage />} />
+            <Route path="/recipe/:userId/:recipeId" element={<RecipePage />} />
+            <Route element={<ProtectedRoutes />}></Route>
+          </Routes>
+        </NavbarProvider>
+      </UserProvider>
     </>
   );
 }

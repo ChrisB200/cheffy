@@ -5,6 +5,10 @@
   width: fit-content;
   color: var(--secondary);
   font-weight: bold;
+  background-color: var(--primary);
+  border: 1px solid var(--secondary);
+  padding: 0.5rem 0.7rem;
+  border-radius: 5px;
 }
 
 h1 {
@@ -18,7 +22,7 @@ h1 {
   width: 100dvw;
   height: 100dvh;
   background-color: black;
-  z-index: 2;
+  z-index: 8;
   animation: fade-in 0.3s ease-out;
   opacity: 0.2;
 }
@@ -32,7 +36,7 @@ h1 {
   width: 80%;
   background-color: var(--primary);
   border: 1px solid var(--secondary);
-  z-index: 3;
+  z-index: 9;
   border-radius: 5px;
   animation: slide-up 0.3s ease-out;
   text-align: center;
@@ -75,6 +79,7 @@ h1 {
   padding: 10%;
   box-sizing: border-box;
   overflow-y: scroll;
+  gap: 3rem;
 }
 
 .row {
@@ -143,16 +148,10 @@ h1 {
 
 }
 
-.submitContainer {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-}
-
 .submit {
   background-color: var(--accent);
-  color: var(--text);
-  padding: 1rem;
+  color: var(--accent-text);
+  padding: 0.5rem 2rem;
   font-weight: bold;
   border-radius: 5px;
   display: flex; 

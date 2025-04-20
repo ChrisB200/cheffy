@@ -57,11 +57,13 @@ function Register() {
   };
   return (
     <>
-      <div className={styles.logo}>
-        <img src={cheffylogo} />
-      </div>
+      <Link to="/">
+        <div className={styles.logo}>
+          <img src={cheffylogo} />
+        </div>
+      </Link>
       <div className={styles.container}>
-        <form onSubmit={handleSubmit}>
+        <form className={styles.form} onSubmit={handleSubmit}>
           <h1>Register</h1>
           <p
             className={`${styles.invalid} ${error != "invalid-credentials" ? "hide" : ""}`}

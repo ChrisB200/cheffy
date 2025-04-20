@@ -26,7 +26,7 @@ a:hover {
   text-decoration: underline;
 }
 
-form {
+.form {
   display: flex;
   flex-direction: column;
   padding: 3rem;
@@ -83,9 +83,6 @@ hr {
 }
 
 .create {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   background-color: var(--accent);
   color: var(--text);
   border-radius: 4px;
@@ -94,9 +91,11 @@ hr {
   font-weight: bold;
   padding: 1rem 2rem;
   transition: color 0.2s, background-color 0.2s;
-  min-width: 200px;
-  width: fit-content;
+  min-width: fit-content;
+  width: 100%;
   text-align: center;
+  max-width: 200px;
+  color: var(--accent-text);
 }
 
 
@@ -117,6 +116,10 @@ hr {
   align-items: center;
 }
 
+.actions > p {
+  color: var(--text);
+}
+
 .actions > p, .actions > a {
   font-size: var(--font-350);
 }
@@ -134,3 +137,8 @@ hr {
   flex: 1 1 300px;   /* grow, shrink, base size */
 }
 
+@media (max-width: 768px) {
+  .form {
+    padding: 1rem;
+  }
+}

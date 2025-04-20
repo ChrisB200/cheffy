@@ -103,7 +103,7 @@ function RecipeModalSheet({ setShowModal }) {
             />
           </div>
           <div className={styles.preview}>
-            <button className={styles.x} onClick={removeImage}>
+            <button className={styles.close} onClick={removeImage}>
               X
             </button>
             <img src={img} alt="Preview" />

@@ -5,71 +5,57 @@ import Cook from "../../assets/cook.svg?react";
 import Clock from "../../assets/clock.svg?react";
 import Bookmark from "../../assets/bookmark.svg?react";
 import BookmarkFilled from "../../assets/bookmark-fill.svg?react";
-import Heart from "../../assets/heart.svg?react";
 import { convertTime } from "../../utils/helpers";
 import StarRating from "../StarRating/StarRating";
 import httpClient from "../../utils/httpClient";
 import { BASE_API_URL } from "../../utils/constants";
 import { useNavigate } from "react-router-dom";
 import { useLoading, useUser } from "../../hooks/contexts";
-import useFetch from "../../hooks/useFetch";
+import { useQuery } from "@tanstack/react-query";
 
 function RecipeDetails({ recipe }) {
   const navigate = useNavigate();
   const [isBookmarked, setIsBookmarked] = useState(false);
   const { user } = useUser();
   const { setLoadingTrue, setLoadingFalse } = useLoading();
-  const { data: bookmark } = useFetch({
-    url: `${BASE_API_URL}/recipe/bookmark/${recipe.id}`,
-    method: "get",
-    withCredentials: true,
-    key: ["get", "recipe", "bookmarked", user?.id],
-    cache: {
-      enabled: true,
-      ttl: 60,
-    },
+
+  const fetchBookmark = async () => {
+    const { data } = await httpClient.get(`${BASE_API_URL}/recipe/bookmark/${recipe.id}`);
+    return data;
+  };
+
+  const { data: bookmark } = useQuery({
+    queryKey: ["get", "recipe", "bookmarked", recipe.id, user?.id],
+    queryFn: fetchBookmark,
+    enabled: !!user,
+    staleTime: 60 * 1000,
   });
 
-  const handleBookmarkClicked = (e) => {
+  const handleBookmarkClicked = async (e) => {
     e.preventDefault();
-    if (isBookmarked) {
-      setLoadingTrue()
-      httpClient
-        .delete(`${BASE_API_URL}/recipe/bookmark?id=${recipe.id}`)
-        .then(() => {
-          setIsBookmarked(false);
-        })
-        .catch((error) => {
-          if (error.status === 401) {
-            alert("You must be logged in to bookmark a post");
-            navigate("/login");
-          }
-        })
+    setLoadingTrue();
 
-      .finally(() => {
-          setLoadingFalse()
-        })
-    } else {
-      setLoadingTrue()
-      httpClient
-        .post(`${BASE_API_URL}/recipe/bookmark?id=${recipe.id}`)
-        .then(() => {
-          setIsBookmarked(true);
-        })
-        .catch((error) => {
-          if (error.status === 401) {
-            alert("You must be logged in to bookmark a post");
-          }
-        })
-      .finally(() => {
-          setLoadingFalse()
-        })
+    try {
+      if (isBookmarked) {
+        await httpClient.delete(`${BASE_API_URL}/recipe/bookmark?id=${recipe.id}`);
+        setIsBookmarked(false);
+      } else {
+        await httpClient.post(`${BASE_API_URL}/recipe/bookmark?id=${recipe.id}`);
+        setIsBookmarked(true);
+      }
+    } catch (error) {
+      if (error.response?.status === 401) {
+        alert("You must be logged in to bookmark a post");
+        navigate("/login");
+      }
+    } finally {
+      setLoadingFalse();
     }
   };
 
   useEffect(() => {
-    setIsBookmarked(bookmark?.bookmark ? bookmark.bookmark : false)
-  }, [bookmark])
+    setIsBookmarked(bookmark?.bookmark ?? false);
+  }, [bookmark]);
 
   return (
     <div className={styles.container}>
@@ -103,10 +89,15 @@ function RecipeDetails({ recipe }) {
         </div>
         <StarRating recipe={recipe} />
         <div className={styles.actions}>
-          <button className={`${styles.button} ${styles.bookmark}`} onClick={handleBookmarkClicked}>
-            {isBookmarked ?
-              <Bookmark className={styles.icon} /> : <BookmarkFilled className={styles.icon}/>
-            }
+          <button
+            className={`${styles.button} ${styles.bookmark}`}
+            onClick={handleBookmarkClicked}
+          >
+            {isBookmarked ? (
+              <Bookmark className={styles.icon} />
+            ) : (
+              <BookmarkFilled className={styles.icon} />
+            )}
             <p>Bookmark</p>
           </button>
         </div>
@@ -116,3 +107,4 @@ function RecipeDetails({ recipe }) {
 }
 
 export default RecipeDetails;
+

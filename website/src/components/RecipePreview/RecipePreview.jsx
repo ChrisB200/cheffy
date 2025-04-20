@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-import useFetch from "../../hooks/useFetch";
 import styles from "./RecipePreview.module.css";
 import { BASE_API_URL } from "../../utils/constants";
 import { useNavigate } from "react-router-dom";
