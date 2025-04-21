@@ -53,7 +53,7 @@ function RecipePreview({ recipe, canEdit = false }) {
       ) : null}
       <div className={styles.container} onClick={() => changePage("container")}>
         <div className={styles.preview} onClick={() => changePage("preview")}>
-          <img src={`${BASE_API_URL}/${recipe.path}`} />
+          <img src={`${BASE_API_URL}/uploads/${recipe.path}`} />
         </div>
         <div className={styles.details}>
           <p className={styles.user}>@{recipe.user.username}</p>

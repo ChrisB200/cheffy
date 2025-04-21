@@ -12,7 +12,7 @@ function SearchPreview({ recipe }) {
 
   return <div className={styles.container} onClick={changePage}>
     <div className={styles.image}>
-      <img src={`${BASE_API_URL}/${recipe.path}`} alt={recipe.title}/>
+      <img src={`${BASE_API_URL}/uploads/${recipe.path}`} alt={recipe.title}/>
     </div>
     <div className={styles.details}>
       <p className={styles.title}>{recipe.title}</p>

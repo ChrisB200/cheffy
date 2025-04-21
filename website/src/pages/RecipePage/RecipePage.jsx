@@ -40,7 +40,7 @@ function RecipePage() {
             <hr />
             <div className={styles.imageContainer}>
               <div className={styles.image}>
-                <img src={`${BASE_API_URL}/${recipe.path}`} />
+                <img src={`${BASE_API_URL}/uploads/${recipe.path}`} />
               </div>
             </div>
           </div>

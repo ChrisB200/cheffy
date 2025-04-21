@@ -30,7 +30,7 @@ function RecipeModalSheet({ setShowModal, recipe = null }) {
     setRecipeName(recipe.title);
     setCuisine(recipe.cuisine.name);
     setDescription(recipe.description);
-    setImg(`${BASE_API_URL}/${recipe.path}`);
+    setImg(`${BASE_API_URL}/uploads/${recipe.path}`);
     setIngredients(recipe.ingredients);
     setSteps(recipe.steps.map((step) => step.instruction));
     setPrepTime({
