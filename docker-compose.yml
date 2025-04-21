@@ -1,6 +1,6 @@
 version: '3'
 services:
-  api:
+  cheffy-api:
     build:
       context: ./api
       dockerfile: Dockerfile
@@ -19,7 +19,7 @@ services:
       - IMAGE_PATH=${IMAGE_PATH}
       - SECRET_KEY=${SECRET_KEY}
 
-  website:
+  cheffy-website:
     build:
       context: ./website
       dockerfile: Dockerfile
