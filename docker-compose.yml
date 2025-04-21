@@ -7,7 +7,7 @@ services:
     container_name: cheffyApi
     restart: always
     volumes:
-      - /srv/cheffy/uploads:/app/uploads
+      - /srv/cheffy/uploads:app/uploads
     ports:
       - "7006:8000"
     networks:
