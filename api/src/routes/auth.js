@@ -12,23 +12,26 @@ router.post("/register", async (req, res) => {
     const { username, email, password } = req.body;
     const hashedPass = await bcrypt.hash(password, 10);
 
-    const isUserEmail = models.user({where: {email}});
+    const isUserEmail = await models.user.findOne({ where: { email } });
     if (isUserEmail) {
-      res.status(403).json({ error: "Email already exists"});
+      return res.status(403).json({ error: "Email already exists" });
     }
 
-    const isUserName = models.user({where: {username}});
+    const isUserName = await models.user.findOne({ where: { username } });
     if (isUserName) {
-      res.status(403).json({ error: "Username already exists"});
+      return res.status(403).json({ error: "Username already exists" });
     }
 
-    const user = new models.user({ username, password: hashedPass, email });
-    await user.save();
+    await models.user.create({
+      username,
+      email,
+      password: hashedPass,
+    });
 
     res.status(201).json({ success: "User has been created" });
   } catch (error) {
-    console.log(error)
-    res.status(500).json({ error: "Registration failed" });
+    console.log(error);
+    res.status(500).json({ error: error.message });
   }
 });
 
@@ -69,9 +72,8 @@ router.get("/is_authenticated", protectedRoute, async (req, res) => {
 
 
 router.get("/user/current", protectedRoute, async (req, res) => {
-  console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
   if (req.currentUser) {
-    return res.status(200).json({id: req.currentUser.id})
+    return res.status(200).json({id: req.currentUser.id, username: req.currentUser.username})
   }
   return res.status(404).json({error: "No user logged in"})
 })

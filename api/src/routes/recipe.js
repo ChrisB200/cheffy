@@ -23,26 +23,62 @@ router.post(
     });
 
     try {
-      await models.recipe.create(
-        {
-          title: req.body.recipe,
-          prep: prep,
-          cook: cook,
-          difficulty: req.body.difficulty,
-          ingredients: ingredients,
-          path: req.file.filename,
-          userId: req.userId,
-          steps: steps.map((step, index) => {
-            return {
-              order: index,
-              instruction: step,
-            };
-          }),
-        },
-        {
-          include: ["ingredients", "steps"],
-        },
-      );
+      const cuisine = await models.cuisine.findOne({
+        where: {
+          name: req.body.cuisine.toLowerCase()
+        }
+      });
+
+      if (cuisine) {
+        await models.recipe.create(
+          {
+            title: req.body.recipe,
+            description: req.body.description,
+            cuisineId: cuisine.id,
+            prep: prep,
+            cook: cook,
+            difficulty: req.body.difficulty,
+            ingredients: ingredients,
+            path: req.file.filename,
+            userId: req.userId,
+            steps: steps.map((step, index) => {
+              return {
+                order: index,
+                instruction: step,
+              };
+            }),
+          },
+          {
+            include: [{model: models.ingredient}, {model: models.step}, {model: models.cuisine}],
+          },
+        );
+      } else {
+        await models.recipe.create(
+          {
+            title: req.body.recipe,
+            description: req.body.description,
+            cuisine: {
+              name: req.body.cuisine.toLowerCase(),
+            },
+            prep: prep,
+            cook: cook,
+            difficulty: req.body.difficulty,
+            ingredients: ingredients,
+            path: req.file.filename,
+            userId: req.userId,
+            steps: steps.map((step, index) => {
+              return {
+                order: index,
+                instruction: step,
+              };
+            }),
+          },
+          {
+            include: [{model: models.ingredient}, {model: models.step}, {model: models.cuisine}],
+          },
+        );
+      }
+
 
       res.status(201).json(req.body);
     } catch (e) {
@@ -50,6 +86,50 @@ router.post(
     }
   },
 );
+
+router.put(
+  "/recipe",
+  [protectedRoute, upload.single("image")],
+  async (req, res) => {
+    const ingredients = JSON.parse(req.body.ingredients);
+    const steps = JSON.parse(req.body.steps);
+    const prep =
+      parseInt(req.body.prepHours) * 60 + parseInt(req.body.prepMins);
+    const cook =
+      parseInt(req.body.cookHours) * 60 + parseInt(req.body.cookMins);
+
+    ingredients.forEach((ingredient) => {
+      ingredient.unitId = ingredient.unit.id;
+    });
+
+    const updateData = {
+      title: req.body.recipe,
+      prep,
+      cook,
+      difficulty: req.body.difficulty,
+      ingredients, // You probably want to handle these separately with associations
+      steps: steps.map((step, index) => ({
+        order: index,
+        instruction: step,
+      })),
+    };
+
+    if (req.file) {
+      updateData.path = req.file.filename;
+    }
+
+    try {
+      await models.recipe.update(updateData, {
+        where: { id: req.body.id }, // fixed field name (assuming your PK is `id`)
+      });
+
+      res.status(200).json(req.body);
+    } catch (e) {
+      res.status(400).json({ error: e.message });
+    }
+  }
+);
+
 
 router.get("/recipe", async (req, res) => {
   try {
@@ -113,11 +193,94 @@ router.get("/recipes", async (req, res) => {
         {
           model: models.cuisine,
         },
+        {
+          model: models.step
+        },
+        {
+          model: models.ingredient,
+          include: [{ model: models.unit }]
+        }
       ],
+      group: ["recipe.id"]
     });
     res.status(200).json(recipes);
   } catch (error) {
     res.status(500).json(error);
+  }
+});
+
+router.get("/recipes/:username", async (req, res) => {
+  try {
+    const { username } = req.params;
+
+    const user = await models.user.findOne({
+      where: { username },
+      attributes: ["id"]
+    });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const recipes = await models.recipe.findAll({
+      where: { userId: user.id },
+      include: [
+        {
+          model: models.user,
+          attributes: ["id", "username"]
+        },
+        {
+          model: models.cuisine
+        },
+        {
+          model: models.step
+        },
+        {
+          model: models.ingredient,
+          include: [{ model: models.unit }]
+        }
+      ]
+    });
+
+    return res.status(200).json(recipes);
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+router.get("/bookmarks/recipes", protectedRoute, async (req, res) => {
+  try {
+    // Get the current user ID from the request (assuming it’s available via JWT or session)
+    const userId = req.currentUser.id;
+
+    // Find all the bookmarks for this user
+    const bookmarks = await models.bookmarks.findAll({
+      where: { userId }, // filter bookmarks by the current user
+      include: [
+        {
+          model: models.recipe,
+          include: [
+            {
+              model: models.user,
+              attributes: ["id", "username"],
+            },
+            {
+              model: models.cuisine,
+            },
+          ],
+        },
+      ],
+    });
+
+    // Extract recipes from the bookmarks and return them
+    const recipes = bookmarks.map((bookmark) => bookmark.recipe);
+
+    console.log(recipes)
+
+    res.status(200).json(recipes);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to fetch bookmarked recipes" });
   }
 });
 
@@ -271,7 +434,6 @@ router.delete("/recipe/bookmark", protectedRoute, async (req, res) => {
 
 router.get("/recipe/search", async (req, res) => {
   try {
-
     if (!req.query.search) {
       return res.status(200);
     }
@@ -299,5 +461,20 @@ router.get("/recipe/search", async (req, res) => {
     res.status(500).json({error: error.message})
   }
 });
+
+router.delete("/recipe/:recipeId", protectedRoute, async (req, res) => {
+  try {
+    await models.recipe.destroy({
+      where: {
+        userId: req.currentUser.id,
+        id: req.params.recipeId
+      }
+    })
+    return res.status(204).send()
+  } catch (error) {
+    return res.status(500).json({error: error.message})
+  }
+}) 
+
 
 module.exports = router;

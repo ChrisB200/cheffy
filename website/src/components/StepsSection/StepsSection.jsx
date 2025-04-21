@@ -22,6 +22,14 @@ function StepsSection({ steps, setSteps }) {
     }
   };
 
+  const handleRemove = (index) => {
+    e.preventDefault();
+    const updatedSteps = [...steps]; 
+    updatedSteps.splice(index, 1);
+    setSteps(updatedSteps);
+
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.steps}>
@@ -29,7 +37,7 @@ function StepsSection({ steps, setSteps }) {
           <div key={index} className={styles.step}>
             <div className={styles.stepHeader}>
               <p>{index + 1}.</p>
-              <button className={styles.remove}>-</button>
+              <button onClick={() => handleRemove(index)} className={styles.remove}>-</button>
             </div>
             <textarea
               value={step}

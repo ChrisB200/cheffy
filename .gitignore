@@ -10,6 +10,7 @@ website/lerna-debug.log*
 website/dist
 website/dist-ssr
 website/*.local
+api/uploads
 
 # Editor directories and files
 .vscode/*

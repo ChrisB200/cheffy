@@ -51,3 +51,39 @@
   text-align: center;
   font-weight: bold;
 }
+
+.edit {
+  margin-top: 1rem;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  background-color: var(--accent);
+  color: var(--accent-text);
+  border: solid 1px var(--accent);
+  border-radius: 5px;
+  z-index: 2;
+  transition: color 0.2s, background-color 0.2s;
+}
+
+.edit:hover {
+  cursor: pointer;
+  background-color: var(--primary);
+  color: var(--accent);
+}
+
+.remove {
+  margin-top: 1rem;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  background-color: var(--secondary);
+  color: var(--text);
+  border: solid 1px var(--secondary);
+  border-radius: 5px;
+  z-index: 2;
+  transition: color 0.2s, background-color 0.2s;
+}
+
+.remove:hover {
+  cursor: pointer;
+  background-color: var(--primary);
+  color: var(--secondary);
+}

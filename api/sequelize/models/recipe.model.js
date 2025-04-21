@@ -27,6 +27,10 @@ module.exports = (sequelize) => {
         values: ["Beginner", "Intermediate", "Advanced"],
         allowNull: false,
       },
+      description: {
+        type: DataTypes.TEXT,
+        allowNull: false
+      },
       path: {
         type: DataTypes.TEXT,
         allowNull: false,

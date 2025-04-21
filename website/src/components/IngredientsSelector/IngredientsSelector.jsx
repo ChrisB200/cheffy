@@ -90,7 +90,7 @@ function IngredientsSelector({ ingredients, setIngredients }) {
       <div className={styles.container}>
         {ingredients.map((ingredient, i) => {
           return (
-            <div key={`${ingredient.name}-${i}`} className={styles.ingredientContainer}>
+            <>
               <div className={styles.removeContainer}>
                 <p className={styles.ingredient}>{ingredient.name}</p>
                 <button onClick={(e) => handleRemove(e, i)} className={styles.remove}>
@@ -120,7 +120,7 @@ function IngredientsSelector({ ingredients, setIngredients }) {
                     );
                   })}
               </select>
-            </div>
+            </>
           );
         })}
 

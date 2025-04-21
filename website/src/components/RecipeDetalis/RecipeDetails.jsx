@@ -12,6 +12,7 @@ import { BASE_API_URL } from "../../utils/constants";
 import { useNavigate } from "react-router-dom";
 import { useLoading, useUser } from "../../hooks/contexts";
 import { useQuery } from "@tanstack/react-query";
+import { toUpper } from "../../utils/helpers";
 
 function RecipeDetails({ recipe }) {
   const navigate = useNavigate();
@@ -28,8 +29,11 @@ function RecipeDetails({ recipe }) {
     queryKey: ["get", "recipe", "bookmarked", recipe.id, user?.id],
     queryFn: fetchBookmark,
     enabled: !!user,
-    staleTime: 60 * 1000,
   });
+
+  const handleUserClicked = async (e) => {
+    navigate(`/profile/${recipe.user.username}`)
+  }
 
   const handleBookmarkClicked = async (e) => {
     e.preventDefault();
@@ -60,9 +64,9 @@ function RecipeDetails({ recipe }) {
   return (
     <div className={styles.container}>
       <div className={styles.content}>
-        <button className={styles.user}>@{recipe.user.username}</button>
+        <button onClick={handleUserClicked} className={styles.user}>@{recipe.user.username}</button>
         <div className={styles.group}>
-          <p className={styles.cuisine}>{recipe.cuisine.name}</p>
+          <p className={styles.cuisine}>{toUpper(recipe.cuisine.name)}</p>
           <h1 className={styles.title}>{recipe.title}</h1>
         </div>
         <div className={styles.info}>
@@ -88,12 +92,15 @@ function RecipeDetails({ recipe }) {
           </div>
         </div>
         <StarRating recipe={recipe} />
+        <p className={styles.description}>
+          {recipe.description}
+        </p>
         <div className={styles.actions}>
           <button
             className={`${styles.button} ${styles.bookmark}`}
             onClick={handleBookmarkClicked}
           >
-            {isBookmarked ? (
+            {!isBookmarked ? (
               <Bookmark className={styles.icon} />
             ) : (
               <BookmarkFilled className={styles.icon} />

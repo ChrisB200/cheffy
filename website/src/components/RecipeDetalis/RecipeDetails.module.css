@@ -113,6 +113,10 @@
   color: var(--primary);
 }
 
+.description {
+  color: var(--text);
+}
+
 
 @media (max-width: 768px) {
   .title {

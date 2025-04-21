@@ -43,3 +43,13 @@ export function compare( a, b ) {
   }
   return 0;
 }
+
+export function toUpper(text) {
+  if (text.length > 1) {
+    const firstLetter = text[0].toUpperCase();
+    const restOfLetters = String(text).slice(1);
+    return firstLetter + restOfLetters;
+  }
+
+  return "";
+}

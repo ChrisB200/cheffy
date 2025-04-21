@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./RecipeModalSheet.module.css";
 import IngredientsSelector from "../IngredientsSelector/IngredientsSelector";
 import DeltatimeInput from "../DeltatimeInput/DeltatimeInput";
@@ -6,9 +6,12 @@ import httpClient from "../../utils/httpClient";
 import { BASE_API_URL } from "../../utils/constants";
 import StepsSection from "../StepsSection/StepsSection";
 
-function RecipeModalSheet({ setShowModal }) {
+function RecipeModalSheet({ setShowModal, recipe = null }) {
   const [recipeName, setRecipeName] = useState("");
+  const [description, setDescription] = useState("");
+  const [cuisine, setCuisine] = useState("");
   const [img, setImg] = useState(null);
+  const [imageFile, setImageFile] = useState(null)
   const [ingredients, setIngredients] = useState([]);
   const [steps, setSteps] = useState([]);
   const [prepTime, setPrepTime] = useState({
@@ -23,18 +26,51 @@ function RecipeModalSheet({ setShowModal }) {
 
   const [difficulty, setDifficulty] = useState("Beginner");
 
+  const loadRecipe = () => {
+    setRecipeName(recipe.title);
+    setCuisine(recipe.cuisine.name);
+    setDescription(recipe.description);
+    setImg(`${BASE_API_URL}/${recipe.path}`);
+    setIngredients(recipe.ingredients);
+    setSteps(recipe.steps.map((step) => step.instruction));
+    setPrepTime({
+      hours: Math.floor(recipe.prep / 60),
+      mins: recipe.prep % 60,
+    });
+
+    setCookTime({
+      hours: Math.floor(recipe.cook / 60),
+      mins: recipe.cook % 60,
+    });
+
+    setDifficulty(recipe.difficulty);
+     
+  };
+
+  useEffect(() => {
+    if (recipe) {
+      loadRecipe();
+    }
+  }, []);
+
   const closeSheet = () => {
     setShowModal(false);
   };
 
   const changePreview = (e) => {
-    const url = URL.createObjectURL(e.target.files[0]);
-    setImg(url);
+    const file = e.target.files[0];
+    if (file) {
+      setImageFile(file); // ← Store the actual file
+      const url = URL.createObjectURL(file);
+      setImg(url);
+    }
   };
+
 
   const removeImage = (e) => {
     e.preventDefault();
     setImg(null);
+    setImageFile(null)
   };
 
   const difficultySelect = (e) => {
@@ -45,32 +81,109 @@ function RecipeModalSheet({ setShowModal }) {
     setRecipeName(e.target.value);
   };
 
+  const handleDescriptionChange = (e) => {
+    setDescription(e.target.value)
+  }
+
+  const handleCuisineChange = (e) => {
+    setCuisine(e.target.value)
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const form = new FormData(e.target);
+    const form = new FormData();
+    form.append("recipe", recipeName);
+    form.append("description", description);
+    form.append("cuisine", cuisine);
     form.append("difficulty", difficulty);
     form.append("ingredients", JSON.stringify(ingredients));
     form.append("steps", JSON.stringify(steps));
+    form.append("prepHours", prepTime.hours);
+    form.append("prepMins", prepTime.mins);
+    form.append("cookHours", cookTime.hours);
+    form.append("cookMins", cookTime.mins);
 
-    httpClient
-      .post(`${BASE_API_URL}/recipe`, form, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((data) => {
-        alert(`Successfully posted your ${recipeName} recipe`);
-        setShowModal(false);
-        window.location.reload()
-      })
-      .catch((error) => {
-        if (error.status === 401) {
-          alert("You must be logged in to create a post");
-        } if (error.status === 400) {
-          alert("An unexpected error has occured");
-          console.log(error);
-        }
-      });
+    if (recipeName === "") {
+      alert("The recipe is missing a name field");
+      return;
+    }
+
+    if (description === "") {
+      alert("The recipe is missing a description");
+      return;
+    }
+
+    if (cuisine === "") {
+      alert("The recipe is missing a cuisine");
+      return;
+    }
+
+    if (!img) {
+      alert("The recipe must have an image");
+      return;
+    }
+
+    if (ingredients.length === 0) {
+      alert("The recipe must have at least 1 ingredient");
+      return;
+    }
+
+    if (steps.length === 0) {
+      alert("The recipe must have at least 1 step");
+      return;
+    }
+
+
+
+    if (imageFile) {
+      form.append("image", imageFile);
+    }
+
+    if (recipe) {
+      form.append("id", recipe.id);
+
+      httpClient
+        .put(`${BASE_API_URL}/recipe`, form, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((data) => {
+          alert(`Successfully updated your ${recipeName} recipe`);
+          setShowModal(false);
+          window.location.reload();
+        })
+        .catch((error) => {
+          if (error.status === 401) {
+            alert("You must be logged in to create a post");
+          }
+          if (error.status === 400) {
+            alert("An unexpected error has occured");
+            console.log(error);
+          }
+        });
+    } else {
+      httpClient
+        .post(`${BASE_API_URL}/recipe`, form, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((data) => {
+          alert(`Successfully posted your ${recipeName} recipe`);
+          setShowModal(false);
+          window.location.reload();
+        })
+        .catch((error) => {
+          if (error.status === 401) {
+            alert("You must be logged in to create a post");
+          }
+          if (error.status === 400) {
+            alert("An unexpected error has occured");
+            console.log(error);
+          }
+        });
+    }
   };
 
   return (
@@ -92,8 +205,31 @@ function RecipeModalSheet({ setShowModal }) {
             />
           </div>
           <div className={styles.row}>
+            <label htmlFor="description">
+              Description
+            </label>
+            <textarea
+              onChange={handleDescriptionChange}
+              value={description}
+              cols="1"
+              rows="3"
+              name="description"
+              className={styles.description}
+              placeholder="Enter a description"
+            />
+          </div>
+          <div className={styles.row}>
+            <label htmlFor="cuisine">Cuisine</label>
+            <input
+              type="text"
+              name="cuisine"
+              value={cuisine}
+              onChange={handleCuisineChange}
+            />
+          </div>
+          <div className={styles.row}>
             <label htmlFor="image">
-              Image <span className={styles.optional}>(optional)</span>
+              Image
             </label>
             <input
               type="file"

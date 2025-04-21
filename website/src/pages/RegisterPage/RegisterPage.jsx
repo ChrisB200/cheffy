@@ -25,6 +25,13 @@ function Register() {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
 
+  const login = async () => {
+      const response = await authService.login(values.email, values.password);
+      localStorage.setItem("access_token", response.data.token);
+      navigate("/");
+      window.location.reload();
+  }
+
   const handleSubmit = (e) => {
     // prevents form from refreshing the page
     e.preventDefault();
@@ -33,6 +40,11 @@ function Register() {
     const form = e.target;
     const isValid = form.checkValidity();
 
+    if (values.password < 8) {
+      setError("password")
+      return;
+    }
+
     if (!isValid) {
       setError("invalid-form");
     } else {
@@ -40,13 +52,11 @@ function Register() {
       authService
         .signup(values.username, values.email, values.password)
         .then(() => {
-          authService.login(values.email, values.password).then(() => {
-            navigate("/");
-          });
+          login()
         })
         .catch((error) => {
-          if (error.status === 401) {
-            setError("invalid-credentials");
+          if (error.status === 403) {
+            setError("in-use");
           } else if (error.status === 500) {
             setError("server-error");
           } else if (error.status === 404) {
@@ -66,9 +76,14 @@ function Register() {
         <form className={styles.form} onSubmit={handleSubmit}>
           <h1>Register</h1>
           <p
-            className={`${styles.invalid} ${error != "invalid-credentials" ? "hide" : ""}`}
+            className={`${styles.invalid} ${error != "password" ? "hide" : ""}`}
           >
-            The email or password is incorrect
+            The password is too short
+          </p>
+          <p
+            className={`${styles.invalid} ${error != "in-use" ? "hide" : ""}`}
+          >
+            The email or username is already in use
           </p>
           <p
             className={`${styles.invalid} ${error != "server-error" ? "hide" : ""}`}

@@ -1,14 +1,16 @@
 import { Routes, Route } from "react-router-dom";
 import Login from "./pages/LoginPage/LoginPage";
 import HomePage from "./pages/HomePage/HomePage";
+import RecipePage from "./pages/RecipePage/RecipePage";
 import ProtectedRoutes from "./utils/protectedRoutes";
 import Register from "./pages/RegisterPage/RegisterPage";
+import BookmarksPage from "./pages/BookmarksPage/BookmarksPage";
 import { UserProvider } from "./contexts/UserContext";
 import { useLoading, useTheme } from "./hooks/contexts";
 import { useEffect } from "react";
 import { NavbarProvider } from "./contexts/NavbarContext";
-import RecipePage from "./pages/RecipePage/RecipePage";
 import LoadingScreen from "./components/LoadingScreen/LoadingScreen";
+import ProfilePage from "./pages/ProfilePage/ProfilePage";
 
 function App() {
   const { theme } = useTheme();
@@ -30,7 +32,10 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/" element={<HomePage />} />
             <Route path="/recipe/:userId/:recipeId" element={<RecipePage />} />
-            <Route element={<ProtectedRoutes />}></Route>
+            <Route path="/profile/:username" element={<ProfilePage/>}/>
+            <Route element={<ProtectedRoutes />}>
+              <Route path="/bookmarks" element={<BookmarksPage/>}/>
+            </Route>
           </Routes>
         </NavbarProvider>
       </UserProvider>

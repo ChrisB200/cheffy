@@ -7,14 +7,12 @@ import RecipeDetails from "../../components/RecipeDetalis/RecipeDetails";
 import Ingredients from "../../components/Ingredients/Ingredients";
 import Steps from "../../components/Steps/Steps";
 import { useLoading } from "../../hooks/contexts";
-import LoadingScreen from "../../components/LoadingScreen/LoadingScreen";
 import Page from "../../components/Page/Page";
 import axios from "axios";
 import useChangeLoading from "../../hooks/useChangeLoading";
 
 function RecipePage() {
   const { userId, recipeId } = useParams();
-  const { changeLoading } = useLoading();
 
   const fetchRecipe = async () => {
     const { data } = await axios.get(`${BASE_API_URL}/recipe?id=${recipeId}`, {
@@ -23,7 +21,7 @@ function RecipePage() {
     return data;
   };
 
-  const { data: recipe, error, isLoading } = useQuery({
+  const { data: recipe, isLoading } = useQuery({
     queryKey: ["get", "recpie", recipeId],
     queryFn: fetchRecipe,
     staleTime: 60 * 1000,

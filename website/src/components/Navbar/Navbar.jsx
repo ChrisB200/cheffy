@@ -105,7 +105,7 @@ function Navbar() {
               </li>
               <li className={styles.item}>
                 {user ? (
-                  <Link className={styles.profile} to="/profile">
+                  <Link className={styles.profile} to={`/profile/${user?.username}`}>
                     My Profile
                   </Link>
                 ) : (
