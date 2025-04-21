@@ -168,7 +168,15 @@ router.get("/recipe", async (req, res) => {
           attributes: [],
         },
       ],
-      group: ["recipe.id"],
+    subQuery: false,
+    group: [
+      "recipe.id",
+      "user.id",
+      "ingredients.id",
+      "ingredients->unit.id",
+      "steps.id",
+      "cuisine.id",
+    ],
     });
 
     if (!recipe) {
