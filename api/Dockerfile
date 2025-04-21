@@ -14,8 +14,6 @@ RUN npm install
 # Copy the rest of the application code into the container
 COPY . .
 
-RUN mkdir uploads
-
 # Expose the port the app will run on (typically 3000 for Node.js apps)
 EXPOSE 8000
 
