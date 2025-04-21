@@ -1,1 +1,1 @@
-export const BASE_API_URL = "api";
+export const BASE_API_URL = "https://cheffy.christopher-bonner.com/api";

@@ -8,14 +8,14 @@ import Ingredients from "../../components/Ingredients/Ingredients";
 import Steps from "../../components/Steps/Steps";
 import { useLoading } from "../../hooks/contexts";
 import Page from "../../components/Page/Page";
-import axios from "axios";
 import useChangeLoading from "../../hooks/useChangeLoading";
+import httpClient from "../../utils/httpClient";
 
 function RecipePage() {
   const { userId, recipeId } = useParams();
 
   const fetchRecipe = async () => {
-    const { data } = await axios.get(`${BASE_API_URL}/recipe?id=${recipeId}`, {
+    const { data } = await httpClient.get(`${BASE_API_URL}/recipe?id=${recipeId}`, {
       withCredentials: true,
     });
     return data;

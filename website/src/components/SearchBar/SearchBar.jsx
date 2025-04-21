@@ -4,14 +4,14 @@ import styles from "./SearchBar.module.css";
 import Search from "../../assets/search.svg?react";
 import { BASE_API_URL } from "../../utils/constants";
 import SearchPreview from "../SearchPreview/SearchPreview";
-import axios from "axios";
+import httpClient from "../../utils/httpClient";
 
 function SearchBar() {
   const [search, setSearch] = useState("");
   const [enabled, setEnabled] = useState(false);
 
   const fetchRecipes = async () => {
-    const { data } = await axios.get(
+    const { data } = await httpClient.get(
       `${BASE_API_URL}/recipe/search?search=${search}`,
       { withCredentials: true }
     );

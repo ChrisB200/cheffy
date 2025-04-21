@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 import httpClient from "../../utils/httpClient";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 
 function StarRating({ recipe }) {
   const { user } = useUser();
