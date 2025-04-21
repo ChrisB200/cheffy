@@ -4,7 +4,7 @@ services:
     build:
       context: ./api
       dockerfile: Dockerfile
-    container_name: api
+    container_name: cheffyApi
     restart: always
     ports:
       - "7006:8000"
@@ -23,7 +23,7 @@ services:
     build:
       context: ./website
       dockerfile: Dockerfile
-    container_name: website
+    container_name: cheffyWebsite
     restart: always
     ports:
       - "7005:3000"
