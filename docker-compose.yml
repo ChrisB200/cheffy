@@ -1,0 +1,36 @@
+version: '3'
+services:
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    container_name: api
+    restart: always
+    ports:
+      - "7006:8000"
+    networks:
+      - app-network
+    environment:
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_HOST=${DB_HOST}
+      - DB_NAME=${DB_NAME}
+      - PORT=${PORT}
+      - IMAGE_PATH=${IMAGE_PATH}
+      - SECRET_KEY=${SECRET_KEY}
+
+  website:
+    build:
+      context: ./website
+      dockerfile: Dockerfile
+    container_name: website
+    restart: always
+    ports:
+      - "7005:3000"
+    networks:
+      - app-network
+    environment:
+      - VITE_API_URL=${VITE_API_URL}
+networks:
+  app-network:
+    driver: bridge
